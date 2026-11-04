@@ -1,8 +1,8 @@
 ---
 name: technical-writing
-description: "Layered technical-writing standard: Diátaxis structure, Google developer style sentences, STE instruction rules, Global English syntax. Use for /technical-writing or when writing or reviewing docs, RFCs, readmes, PR descriptions, or commit messages."
-disable-model-invocation: true
+description: "Layered technical-writing standard: Diátaxis structure, Google developer style sentences, STE instruction rules, Global English syntax. Use for $technical-writing or when writing or reviewing docs, RFCs, readmes, PR descriptions, or commit messages."
 ---
+
 
 # Technical writing
 
@@ -15,6 +15,8 @@ Three rules sit above the layers:
 - **When a rule makes a sentence worse, fix the sentence another way or leave it alone.** A sentence that follows every rule and sounds like a machine wrote it has failed.
 
 The codebase is the word list. Write the real symbol, file, flag, or command name, not a synonym or a description of it.
+
+When a code change affects user-visible behavior, a public interface, or configuration, check whether project docs need an update. Update the relevant docs in the same change, follow the project's doc placement rules, and verify that the text matches the resulting behavior.
 
 Don't invent jargon. Use the words a developer would say out loud: "move", "delete", "a budget that only decreases", not "evacuate", "ratchet", or "endgame". A named pattern is fine when the doc says what it means the first time. Propose a new offender and its replacement as an addition to `unslop`'s abstract-metaphor rule in your reply, with the diff. Don't edit that skill.
 

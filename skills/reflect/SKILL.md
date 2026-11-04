@@ -1,69 +1,38 @@
 ---
 name: reflect
-description: Spawn three parallel review subagents over the active transcript, surface learnings, and route each to a concrete edit on an existing skill. Use when the user says reflect.
-disable-model-invocation: true
+description: Review the current Codex conversation for durable lessons, propose skill edits, and wait for approval before applying them. Use when the user says $reflect.
 ---
 
 # Reflect
 
-Mine the current conversation for durable learnings, then route them into skill edits.
+Find durable learnings in the current conversation and propose focused skill changes. Skip trivial, off-topic, or already-covered lessons.
 
-Invoke when the user says "reflect" or "/reflect". Skip when the conversation is trivial, off-topic, or already covered by an existing skill the parent followed correctly. One-offs are not learnings.
+## 1. Gather the conversation
 
-## 1. Locate the active transcript
+Use the active conversation directly. Codex does not promise a stable transcript path. Use Codex history tools only when this session exposes them and the user can access the history. Do not inspect undocumented databases or other workspaces. If the chat is too long to inspect, create a concise evidence digest from the visible conversation.
 
-Before fanning out, find this conversation's transcript in the `agent-transcripts/` directory the system prompt names. Do not glob across `~/.cursor/projects/*/`. That crosses workspace boundaries and reads private chats from unrelated projects.
+## 2. Review for patterns
 
-```bash
-ls -t <agent-transcripts>/*.jsonl <agent-transcripts>/*/*.jsonl <agent-transcripts>/*/subagents/*.jsonl 2>/dev/null | head -10
-```
+Look for repeated corrections, choices, and workflow failures. One-off preferences are weak evidence. Use Codex collaboration tools for independent reviews only when available and permitted. Give each reviewer a separate lens and the same evidence digest. Otherwise review the conversation yourself and say that there was no independent review.
 
-That covers the legacy flat (`<id>.jsonl`), current nested (`<id>/<id>.jsonl`), and subagent (`<parent>/subagents/<child>.jsonl`) layouts. For each candidate, read the first JSONL line. Take the file whose `message.content[0].text` contains the conversation's opening user prompt. If none matches, pass a tight digest of the session instead.
+Reviewers should return candidate lessons with the user's evidence, a proposed skill destination, and a concrete change. A synthesizer may combine duplicates and reject lessons that would not change a future decision.
 
-## 2. Spawn three reviewers in parallel
+## 3. Check enforcement
 
-One message, three `Task` calls, `subagent_type: generalPurpose`, agent mode (`readonly: false`). Reviewers need MCP access to look up the tickets, chat threads, and observability traces the transcript references, and readonly strips MCPs.
+Move a lesson to a structural fix when a type, test, lint rule, or script would enforce it more reliably than prose. Use `$correct` when the underlying repository needs that kind of change.
 
-Each reviewer and the synthesizer name a role line in the `pstack-models.mdc` rule and a default. Set `model` to that line's value, or to the default if the rule or the line is missing. Leave `model` unset when the value is `auto` or `inherit-parent`. If the Task tool rejects a slug, use the default and say so. If it rejects the default, use the closest valid slug of the same family from its error message. Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section of the **poteto-mode** skill.
+## 4. Ask before applying skill edits
 
-| Lens | Role line | Default `model` | Prompt template |
-|---|---|---|---|
-| Judgment | `reflect judgment, divergent, synthesizer` | `claude-opus-5-5-xhigh` | `references/judgment-reviewer.md` |
-| Tooling | `reflect tooling` | `grok-4.7-xhigh-fast` | `references/tooling-reviewer.md` |
-| Divergent | `reflect judgment, divergent, synthesizer` | `claude-opus-5-5-xhigh` | `references/divergent-reviewer.md` |
+Show the proposed Accepted, Rejected, and Backlog items. Wait for the user's explicit approval before changing shared skills. Do not file backlog items in an external tracker unless the user asks.
 
-Pass each template verbatim, substituting the transcript path or digest where marked. Reviewers return findings in the `Task` response body.
+Route approved edits:
 
-## 3. Synthesize
+- A one-line correction goes directly into the existing skill.
+- A substantive skill change uses `$skill-creator` when available.
+- A new skill uses `$skill-creator` when available and has no existing skill home.
 
-One `Task` call, `subagent_type: generalPurpose`, `model` from the `reflect judgment, divergent, synthesizer` line (default `claude-opus-5-5-xhigh`), agent mode (`readonly: false`). It spot-verifies citations through MCP, and readonly strips MCPs. Pass `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. It returns an Accepted / Rejected / Backlog list.
+Project skills live under `.agents/skills/<skill>/`. Personal skills live under `~/.agents/skills/<skill>/`. Never edit Codex's installed plugin cache.
 
-## 4. Structural enforcement check
+## 5. Validate and report
 
-Move any Accepted item that a lint rule, script, metadata flag, or runtime check would enforce more reliably to Backlog. See the **encode-lessons-in-structure** principle skill.
-
-## 5. Apply
-
-Present the synthesizer's full Accepted / Rejected / Backlog output and wait for explicit approval before applying any Accepted edit. The user picks the subset and may redirect routings. Skill changes affect every future agent in the org. Do not auto-apply.
-
-File each Backlog item to your team's devex or backlog tracker without waiting. Only the Accepted list waits for approval.
-
-Never edit a skill under `plugins/cache/`. Before approval, show its destination, `.cursor/skills/<skill>/` or `~/.cursor/skills/<skill>/`. After approval, copy the skill folder there and edit the copy. Never open a PR or push.
-
-Follow each approved row's Routing exactly:
-
-- Trivial existing-skill edit (a one-line bullet, a tightened sentence, a stale fact corrected): the parent does it directly.
-- Substantive existing-skill edit (a new section, a new pattern table, more than ~10 lines): hand to Cursor's built-in `create-skill` skill and run its draft / test / iterate loop.
-- `tune description: <skill path>` (the skill exists but didn't trigger when it should have): hand to `create-skill` and run its description-optimization loop.
-- `new skill via create-skill: <kebab-name>`: hand creation to `create-skill`. Do not invent the shape ad hoc.
-
-If your environment ships a SKILL.md validator, run it on every touched skill before declaring done.
-
-## 6. Summarize for the user
-
-Short list, no preamble:
-
-- Edits applied: `<skill path>`. What changed, one line each.
-- New skills created: `<skill path>`. One line each (rare).
-- Backlog filed to the devex tracker: `<issue title>` (`<tags>`). One line each.
-- Dropped: one line per rejected finding + reason from the synthesizer.
+Check frontmatter and local links. Run the Codex skill validator when available. Report the evidence, approved edits, rejected items with reasons, proposed backlog, and validation results.
