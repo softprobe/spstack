@@ -17,7 +17,7 @@ Remove comments that only narrate, restate the code, or give an instruction with
 
 ## Check the context
 
-For rationale not derivable from code, follow available evidence beyond the diff: linked contracts and design docs, ADRs, issues, PRs, git history, and context supplied by the caller. Use `$how` or `$why` to investigate code behavior, but do not expect code-reading alone to establish business intent or historical lessons. Do not treat missing documentation or missing code evidence as proof that the rationale is false. If a comment contains specific, useful context and available sources neither confirm nor refute it, preserve it as **unverified** and report that status. If sources conflict, report the conflict and affected code; do not silently erase context or disguise a possible code defect as comment cleanup. A comment is stale only when current authoritative context establishes that the reason no longer applies.
+For rationale not derivable from code, follow available evidence beyond the diff: linked contracts and design docs, ADRs, issues, PRs, git history, and context supplied by the caller. Use `$how` or `$why` to investigate code behavior, but do not expect code-reading alone to establish business intent or historical lessons. Treat specific context supplied by the caller as evidence: preserve it and identify it as caller-provided without requiring code or repository corroboration. Do not treat missing documentation or missing code evidence as proof that the rationale is false. If a comment contains specific, useful context and available sources neither confirm nor refute it, preserve it as **unverified** and report that status. If sources conflict, report the conflict and affected code; do not silently erase context or disguise a possible code defect as comment cleanup. A comment is stale only when current authoritative context establishes that the reason no longer applies.
 
 `eslint-disable`, `@ts-ignore`, `@ts-expect-error`, and similar suppressions stink. Look up the rule. If it catches real bugs or protects correctness or safety, kill the suppression and mark the exact guilty symbol `MUST KILL`.
 
@@ -31,10 +31,11 @@ Use these as behavior checks, not as a closed list of acceptable comment topics.
 |---|---|
 | `// Keep exports disabled for trial accounts; the trial plan does not include data export.` A product contract documents this rule. | Keep the concise rationale; separately flag any code defect. |
 | `// Keep this retry bounded; the partner rate limit is per account.` No contract is checked in, but the comment is specific and no evidence contradicts it. | Keep and report the rationale as unverified; do not infer it is false from missing code or docs. |
+| `// Keep held records until counsel releases the hold.` The caller says this records a legal obligation learned from a prior audit; the repository has no further record. | Keep and report the rationale as caller-provided context; do not require code or repository corroboration. |
 | `// Increment the counter.` The next line increments it. | Delete as narration. |
 | A comment says a credential must never be logged, but current code logs it and the security policy agrees. | Report the code defect and enforcement gap. Do not present deletion of the comment as the fix. |
 | A comment describes an old workaround that a linked issue says was removed, and current code no longer has the workaround. | Remove or update the stale comment, citing the evidence. |
 
-Report only. Name touched files, deletion count, retained rationale (supported or unverified), stale or contradicted claims with evidence, `MUST KILL` flags, and skips. I do not edit application code.
+Report only. Name touched files, deletion count, retained rationale and its provenance (source-supported, caller-provided, or unverified), stale or conflicting claims with evidence, `MUST KILL` flags, and skips. I do not edit application code.
 
 Every flag names code inside the scope and tells the truth. I invent nothing. I touch comments and identify refactor targets. I never write application code.
