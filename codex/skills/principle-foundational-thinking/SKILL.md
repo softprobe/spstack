@@ -1,6 +1,6 @@
 ---
 name: principle-foundational-thinking
-description: "Apply before writing logic: choosing core types and data structures, sequencing scaffold-vs-feature work, asking what concurrent actors share. Get the data structures right so downstream code becomes obvious."
+description: "Apply before defining persistent or cross-service contracts, or writing logic that chooses core types and data structures, sequences scaffold-vs-feature work, or shares state between concurrent actors. Get the data structures right so downstream code becomes obvious."
 ---
 
 Before following this upstream skill, read [the Codex adapter](../poteto-mode/CODEX-ADAPTER.md) and apply its tool, model, and path mappings.
@@ -10,6 +10,8 @@ Before following this upstream skill, read [the Codex adapter](../poteto-mode/CO
 **Structural decisions** protect option value. **Code-level decisions** protect simplicity.
 
 **Data structures first.** Get the data shape right before writing logic. Define core types early, trace every access pattern, and choose structures that match the dominant paths.
+
+Before building APIs, storage, or cross-service contracts on a new shape, settle the highest-risk ownership, cardinality, and source-of-truth assumptions. If one is still unknown, make resolving it the first verifiable unit instead of propagating it through the implementation.
 
 At code level, DRY the structure, not every line. Types and data models should converge. Three similar statements still beat a premature abstraction. Prefer explicit over clever. Test behavior and edge cases, not line counts.
 

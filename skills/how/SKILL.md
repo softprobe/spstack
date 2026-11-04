@@ -8,6 +8,10 @@ disable-model-invocation: true
 
 Explore the codebase to answer "how does X work?" questions. Produce architectural explanations at the level of a senior engineer onboarding onto a subsystem, enough to build a working mental model, not so much that it reads like annotated source code.
 
+## When a question includes a design proposal
+
+Separate the user's outcome and constraints from the proposed mechanism. Mark source-backed facts, assumptions, and decisions separately. Before turning a new entity, identifier, state, capability, or boundary into an API or acceptance criterion, compare the smallest model that meets the outcome with the proposed model. Name the assumption most likely to change the design and find evidence or an observation that could disprove it. Keep acceptance criteria about user-visible behavior or required invariants, not a restatement of the proposed implementation. For choices that establish persistent state or cross-service contracts, apply [Model the Domain](../principle-model-the-domain/SKILL.md) and [Foundational Thinking](../principle-foundational-thinking/SKILL.md) before recommending a shape.
+
 Every spawn is a Task subagent with `subagent_type: generalPurpose` and `readonly: true`. Explorers use the `how explorer` line in the `pstack-models.mdc` rule (default `grok-4.7-xhigh-fast`), and every explainer uses the `how explainer` line (default `claude-opus-5-5-xhigh`). Set `model` to that line's value, or to the default if the rule or the line is missing. Leave `model` unset when the value is `auto` or `inherit-parent`. If the Task tool rejects a slug, use the default and say so. If it rejects the default, use the closest valid slug of the same family from its error message. Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section of the **poteto-mode** skill.
 
 ## 1. Assess complexity
