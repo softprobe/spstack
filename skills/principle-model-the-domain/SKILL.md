@@ -1,12 +1,14 @@
 ---
 name: principle-model-the-domain
-description: "Apply when writing stateful logic, or when code branches a lot or repeats a shape assumption across files."
+description: "Apply when defining a persistent or cross-boundary domain shape, writing stateful logic, or when code branches a lot or repeats a shape assumption across files."
 ---
 
 
 # Model the Domain
 
 Encode the real domain in a data structure instead of scattering it across conditionals. A structure that matches the domain makes invalid states unrepresentable and deletes branches. Choosing it at write time is cheap. Recovering it later reads as a refactor and gets deferred.
+
+Before a new concept crosses a state, persistence, or service boundary, make its shape explicit. Identify its owner, cardinality, source of truth, lifecycle, consumers, and the invariant it enforces. Check whether an existing concept already supplies that information. Keep the new concept only when removing or deriving it would break a distinct requirement; resolve unknown cardinality before repeating the shape across layers. An identifier can be needed for one decision and redundant for another. For each boundary, name the distinct invariant or query that fails if the value is omitted there; propagate it only where that need exists.
 
 Reach for:
 

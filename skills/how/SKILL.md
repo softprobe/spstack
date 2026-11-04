@@ -7,6 +7,10 @@ description: Explain how code works, walk through a subsystem before a change, a
 
 Explain the code well enough to give an engineer a working model of the subsystem. Trace real entry points, data, and runtime behavior. Do not annotate every line.
 
+## When a question includes a design proposal
+
+Separate the user's outcome and constraints from the proposed mechanism. Mark source-backed facts, assumptions, and decisions separately. Before turning a new entity, identifier, state, capability, or boundary into an API or acceptance criterion, compare the smallest model that meets the outcome with the proposed model. Name the assumption most likely to change the design and find evidence or an observation that could disprove it. Keep acceptance criteria about user-visible behavior or required invariants, not a restatement of the proposed implementation. For choices that establish persistent state or cross-service contracts, apply [Model the Domain](../principle-model-the-domain/SKILL.md) and [Foundational Thinking](../principle-foundational-thinking/SKILL.md) before recommending a shape.
+
 ## Assess the scope
 
 - A narrow question about one function or module needs one pass through the source.

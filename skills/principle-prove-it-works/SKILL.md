@@ -15,6 +15,10 @@ Check the real thing, not a proxy:
 - Read the actual value, not a cached or derived representation
 - When verification fails, suspect the observation method before suspecting the system
 
+## Verify the design claim
+
+A behavior check proves that the chosen design works; it does not prove that every new entity, identifier, or boundary is necessary. For each architecture-defining addition, state the distinct user need or invariant it serves and check what fails if it is removed or derived from existing data. Check each use independently: a concept justified in one part of the system does not establish that it belongs in every API, assertion, storage key, or query. Keep behavior checks implementation-neutral so they can validate a simpler design too.
+
 ## Follow the repository's gate
 
 Read the repository's instructions and local verification skill to find the required checks for the changed surface. Run those checks and report their results. Do not bypass a required check with a skip option unless the user explicitly asks. If a required check cannot run, report the blocker and leave verification incomplete.
