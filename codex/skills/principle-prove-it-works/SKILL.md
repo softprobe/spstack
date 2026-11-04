@@ -16,6 +16,10 @@ Check the real thing, not a proxy:
 - Read the actual value, not a cached or derived representation
 - When verification fails, suspect the observation method before suspecting the system
 
+## Follow the repository's gate
+
+Read the repository's instructions and local verification skill to find the required checks for the changed surface. Run those checks and report their results. Do not bypass a required check with a skip option unless the user explicitly asks. If a required check cannot run, report the blocker and leave verification incomplete.
+
 ## Script the check when you can
 
 The strongest proof is a deterministic script that re-runs the same comparison, not a one-time eyeball. Write the script, run it, and keep its output as an artifact a reviewer can re-run instead of trusting your word.
