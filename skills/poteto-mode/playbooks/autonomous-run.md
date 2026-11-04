@@ -1,13 +1,14 @@
 ### Autonomous run
 
-**You own the exit condition. Define done, then drive to it without stopping.**
+**You own the exit condition. Define done, then work toward it without needless pauses.**
 
-1. State the exit condition as a checkable predicate before the first iteration (tests green, repro fixed, all N PRs merged, pixel-diff zero).
-2. Pick the wake mechanism using Cursor's `/loop` command (a built-in, not a pstack skill). An event to watch (CI, a merge, a ref advancing) gets a watcher subagent that wakes you on the event, with a long time-based heartbeat as fallback. No event gets a fixed-interval heartbeat sized to when the result is worth re-checking. Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section.
-3. Each iteration makes the smallest change the evidence justifies, verifies it against the predicate, commits if it advanced, discards changes that didn't help. Belt-and-suspenders that "might help" gets reverted, not left to ride.
-   Sequence the work via the **sequence-verifiable-units** principle skill, verifying each unit before the next instead of batching checks at the end.
-4. Mid-run discoveries that support the goal are yours. Address broken skills, related bugs, flaky verifiers, review noise, tooling failures, orphaned follow-ups, and fixable drift yourself via poteto-mode. Put out-of-band fixes in their own PR. Do not park reversible work for the human or use `AskQuestion`. Surface only irreversible actions, genuine product or preference calls no experiment can settle, or a real dead end. Keep the predicate as the main drive, and return to it after each side fix.
-5. Checkpoint every iteration via the **show-me-your-work** skill, a row for what changed and whether the predicate moved.
-6. Stop when the predicate is met. A plateau is not a stop, so keep going and pivot your approach to push past it. Surface a genuine dead end rather than spinning, and never relax the predicate to declare victory.
+1. State the exit condition as a checkable predicate before the first iteration.
+2. Check whether the current Codex session exposes a supported background or event-driven feature. Use it only when it fits the request. Otherwise work in the active session. Do not promise that Codex will wake after the session or app ends.
+3. Make the smallest change the evidence justifies. Verify it against the predicate. Commit when it advances the goal, and revert changes that did not help.
+4. Address in-scope discoveries that support the goal. Put independent fixes in their own commits or pull requests. Ask only for irreversible actions, genuine product choices, or a real dead end.
+5. Keep a decision trail with **show-me-your-work**. Log each completed unit and whether the predicate moved.
+6. Stop when the predicate is met. If progress stalls, change the approach. Surface a real dead end instead of spinning, and never relax the predicate to claim success.
 
-**Reply:** the exit condition, iterations run, what landed, what was discarded, final predicate state.
+Before ending the session, leave a checkpoint with the branch, completed work, verification evidence, remaining steps, and risks.
+
+**Reply:** the exit condition, iterations completed, what landed, what was reverted, and the final predicate state.

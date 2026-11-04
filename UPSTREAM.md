@@ -1,10 +1,12 @@
-# Upstream source
+# Upstream attribution
 
-- Repository: https://github.com/cursor/plugins
-- Plugin path: `pstack/`
-- Snapshot: `main` at `fd268b808c786469e6dd8c8d9db864d0de4d669e`
-- Plugin version: `0.15.36`
-- Retrieved: 2026-11-03 (America/Los_Angeles)
+Spstack is based on the MIT-licensed `pstack` plugin from [cursor/plugins](https://github.com/cursor/plugins/tree/main/pstack), created by Lauren Tan (@poteto).
+
+- Upstream repository: <https://github.com/cursor/plugins>
+- Upstream path: `pstack/`
+- Imported upstream commit: `fd268b808c786469e6dd8c8d9db864d0de4d669e`
+- Upstream version: `0.15.36`
+- Port date: 2026-11-03
 - License: MIT. See [LICENSE](./LICENSE).
 
-The upstream tree is preserved under this directory. Codex-specific adaptations live in `codex/`.
+Spstack is a maintained fork. Its Codex plugin package and skills are adapted for Codex; the upstream Cursor package is not duplicated in this repository.

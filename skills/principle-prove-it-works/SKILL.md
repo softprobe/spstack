@@ -1,8 +1,8 @@
 ---
 name: principle-prove-it-works
 description: "Apply after completing a task, before declaring done. Verify against the real artifact (run the feature, read the actual value, inspect the diff), not a proxy, self-report, or 'it compiles.'"
-disable-model-invocation: true
 ---
+
 
 # Prove It Works
 
@@ -14,6 +14,10 @@ Check the real thing, not a proxy:
 - Check process liveness directly, not indirectly through derived state
 - Read the actual value, not a cached or derived representation
 - When verification fails, suspect the observation method before suspecting the system
+
+## Follow the repository's gate
+
+Read the repository's instructions and local verification skill to find the required checks for the changed surface. Run those checks and report their results. Do not bypass a required check with a skip option unless the user explicitly asks. If a required check cannot run, report the blocker and leave verification incomplete.
 
 ## Script the check when you can
 

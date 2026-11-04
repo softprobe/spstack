@@ -1,41 +1,32 @@
 ---
 name: swarm
-description: "Fan out N parallel workers, drain them, and return one report. Use for /swarm, 'swarm this', or parallel coverage, races, gauntlets, and exploration."
-disable-model-invocation: true
+description: Run independent parallel checks across slices or race attempts, then combine the evidence into one report. Use for $swarm, "swarm this", or parallel coverage and exploration.
 ---
 
 # Swarm
 
-## Start
+Use a swarm when work divides into independent slices, or when several attempts at one brief would reveal useful alternatives. Keep ownership and outputs separate.
 
-Open a todolist with one entry per phase before launching anything.
+## Frame
 
-1. Frame
-2. Fan out
-3. Aggregate
-4. Report
+1. State the completion predicate and the artifact or report the swarm must return.
+2. Choose a shape: partition into slices, race identical briefs, or combine both.
+3. For a race, declare `first pass`, `rank all`, or `best of` before running candidates.
+4. Read `$CODEX_HOME/pstack-models.yaml`, or `~/.codex/pstack-models.yaml` when `CODEX_HOME` is unset, only if the session exposes supported model selection. Otherwise use the current model.
+5. Give every worker a complete brief with the goal, owned slice, exact evidence to collect, output format, and verification steps.
 
-## Phase A: Frame
+## Fan out
 
-1. State the done predicate and the artifact or report the swarm must return.
-2. Choose the shape. Partition into slices, race N workers on identical briefs, or mix both. For a race or mixed shape, declare `first pass`, `rank all`, or `best-of` before spawning.
-3. Pick the worker model from the `swarm workers` line in `~/.cursor/rules/pstack-models.mdc`. If the rule or that line is missing, use `grok-4.7-xhigh-fast`. For `auto` or `inherit-parent`, omit `model` so the workers run on the parent model. If the Task tool rejects a slug, use the default and say so. If it rejects the default, use the closest valid slug of the same family from its error message. For a model race, name each arm's model up front. Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section of the **poteto-mode** skill.
-4. Give each worker its own writable output when it writes. When workers verify or measure commits, each brief names the exact SHAs. A measurement brief also names the method (sample count, what one sample is, order). The worker records both in its result.
+Use Codex collaboration tools only when they are available and the user and project instructions permit delegation. Follow the active tool schema. Ask for one independent task per worker. Use separate worktrees or output directories for workers that write. If the session cannot provide isolation, keep workers read-only or run them serially.
 
-## Phase B: Fan out
+Do not describe a worker as running in the cloud or on another machine unless the active Codex tool confirms that behavior. If collaboration is unavailable, run the same slices in sequence and report that they were sequential.
 
-Spawn all N workers in one message with `subagent_type: generalPurpose`, `environment: "cloud"`, `run_in_background: true`, and the step 3 model, left unset for `auto` or `inherit-parent`. Use `environment: "local"` only when the worker needs access to something on the user's computer.
+If a worker stops, continue with the remaining workers and record the missing slice.
 
-When a worker must start from a non-default pushed branch, pass `cloud_base_branch`.
+## Aggregate
 
-Every brief stands alone. Include the goal, scope, exact slice or race arm, how to verify, and what to report. Reports use `PASS`, `ISSUES`, or `BLOCKED` with evidence. A worker that can prove a defect reports `ISSUES` and lists every issue it can prove, not only the first.
+Check every result against the named evidence. For measured work, require the exact revision and method. A missing result is a coverage gap, not a pass. For a race, apply the rule declared in Phase A. Combine findings that share a cause. Do not paste raw worker output.
 
-If a worker drops out, proceed with N-1 and note it.
+## Report
 
-## Phase C: Aggregate
-
-Read the terminal results. Drop a result that does not record the SHAs and method its brief names, and respawn that worker once. After a second miss, record a gap. A gap does not count as a pass. For coverage, every required slice needs a result. For a race, apply the selection rule declared up front. Use first pass, rank all, or best-of. Do not paste raw worker dumps.
-
-## Phase D: Report
-
-Return one consolidated in-chat report with a result table, issue one-liners, gaps or dropouts, and the race rule when used.
+Return the completion predicate, the result per slice or candidate, verified issues, gaps or dropouts, and the selected race rule when one applies.

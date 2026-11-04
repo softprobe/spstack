@@ -50,12 +50,7 @@ async function mergeAssessment(
     }),
   };
 }
-const AUTOMATION_TOKENS = [
-  "bugbot",
-  "security review",
-  "pr review automation",
-  "review automation",
-] as const;
+const REVIEW_TOKEN = "review";
 export async function readSnapshot(args: {
   readonly reader: T.GitHubReader;
   readonly context: T.PrContext;
@@ -132,9 +127,7 @@ export async function readSnapshot(args: {
     reviewAutomationRunning: checks.checks.some(
       (check) =>
         check.kind === "pending" &&
-        AUTOMATION_TOKENS.some((token) =>
-          check.name.toLowerCase().includes(token)
-        )
+        `${check.name} ${check.workflow}`.toLowerCase().includes(REVIEW_TOKEN)
     ),
   };
 }
