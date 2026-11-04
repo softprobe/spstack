@@ -1,11 +1,11 @@
 ### Session pickup
 
-**You own the resume point. Read the prior trail, don't redo it.**
+**You own the resume point. Reconstruct state before continuing.**
 
-1. Locate the prior trail. A local transcript under the active workspace's `agent-transcripts/` directory (the system prompt names the path. Do not glob across `~/.cursor/projects/*/`, that crosses workspace boundaries and reads private chats from unrelated projects), a cloud-agent URL, or a pushed branch. Read the metadata overview and last messages first, then scan back for the decision points. Parse a long transcript in a subagent and keep the reduced timeline in the main thread (the **principle-guard-the-context-window** skill). Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section.
-2. Reconstruct operational state. The branch and worktree, what already landed (`git log`, `git diff` against the base), the open todos, the decisions made. The prior trail is authoritative input. Resist the bias to re-derive it.
-3. Diff done vs pending. Compare what shipped against what was planned, name the resume point, do not re-run the prior repro or redo completed work. A "let me verify from scratch" pass means you're treating the trail as untrustworthy when it's authoritative.
-4. Route the remaining work to the matching playbook and pick the verdict: continue the execution, ship a finished recommendation, ratify or override a prior conclusion, or postmortem a failed run. The pickup playbook ends here. The routed playbook owns the rest.
-5. Verify the inherited claims against the original goal on the real artifact (the **principle-prove-it-works** skill). A passing prior self-report is not the proof.
+1. Find the prior Codex conversation, task link, checkpoint, or pushed branch the user names. Use Codex history tools only when the session exposes them. Do not inspect undocumented local databases or unrelated workspaces. If no prior context is available, use repository state and ask for a link only when it changes the next step.
+2. Reconstruct the branch and worktree, landed changes, remaining tasks, and prior decisions. Check `git log`, `git diff` against the base, open pull requests, and the current checklist.
+3. Compare completed work with the stated goal. Name the resume point. Do not repeat completed verification unless current state makes it stale.
+4. Route remaining work to the matching playbook. That playbook owns execution from here.
+5. Verify inherited claims against the current artifact and current goal. A prior agent's report is not proof by itself.
 
-**Reply:** where the prior agent stopped, what you inherited vs redid (ideally nothing redone), the resume point, and the outcome.
+**Reply:** where the prior run stopped, what you inherited, the resume point, and the outcome.

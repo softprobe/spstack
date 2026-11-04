@@ -24,7 +24,7 @@ Apply each criterion to every finding:
 Drop (implementation details that drift):
 - "linter at SHA `bd91aa7` uses chars/4 heuristic"
 - "`<specific-skill-name>` has 175 tokens at limit 80"
-- "Bugbot flagged regex backtracking on May 2"
+- "automated reviewer flagged regex backtracking on May 2"
 - "we renamed `gpt-4` to `gpt-4o` in `encodingForModel`"
 
 Keep (durable patterns):
@@ -53,4 +53,4 @@ For each rejected finding:
 
 ## Backlog
 
-For each item, describe the pattern, what was hit, and the suggested mechanism. The parent files each to whatever devex / backlog tracker the team uses.
+For each item, describe the pattern, what was hit, and the suggested mechanism. The parent presents backlog items without filing them unless the user asks.

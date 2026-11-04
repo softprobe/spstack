@@ -1,21 +1,35 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "pstack",
-  "version": "0.15.36",
-  "description": "if you want to go fast, go deep first. pstack helps you write less, but higher quality code. rigorous agent workflows you can parallelize with confidence.",
+  "name": "spstack",
+  "version": "0.16.0",
+  "description": "Codex-first engineering workflows for deliberate design, focused implementation, and verified changes.",
   "author": {
-    "name": "Lauren Tan"
+    "name": "Softprobe",
+    "url": "https://softprobe.ai"
   },
-  "homepage": "https://github.com/cursor/plugins/tree/main/pstack",
-  "repository": "https://github.com/cursor/plugins",
+  "homepage": "https://github.com/softprobe/spstack",
+  "repository": "https://github.com/softprobe/spstack",
   "license": "MIT",
   "keywords": [
-    "pstack",
-    "poteto-mode",
-    "workflow",
-    "principles",
-    "agent-style",
-    "subagents",
-    "unslop"
-  ]
+    "codex",
+    "engineering",
+    "skills",
+    "verification",
+    "workflows"
+  ],
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/setup-pstack/SKILL.md",
+      "interface": {
+        "displayName": "Spstack",
+        "shortDescription": "Codex-first engineering workflows",
+        "longDescription": "Focused skills and playbooks for code understanding, design, implementation, review, and verification.",
+        "developerName": "Softprobe",
+        "category": "Productivity",
+        "websiteURL": "https://github.com/softprobe/spstack",
+        "brandColor": "#3B82F6",
+        "logo": "./assets/logo.png"
+      }
+    }
+  }
 }

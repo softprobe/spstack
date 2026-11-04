@@ -1,66 +1,40 @@
-# Set up pstack
+# Set up Spstack for Codex
 
-In this page you install the plugin, pick which models pstack uses, and run your first task. Setup is one command plus a short conversation.
+Install the plugin, choose optional delegation preferences, and run a first task.
 
 ## Install the plugin
 
-In a Cursor chat, run:
+Add the Softprobe marketplace and install Spstack:
 
-```text
-/add-plugin pstack
+```sh
+codex plugin marketplace add softprobe/spstack
+codex plugin add spstack@softprobe-spstack
 ```
 
-Cursor confirms the plugin is installed.
+In Codex desktop, restart the app and enable Spstack from the Plugins directory. Then open a new session.
 
-In Claude Code, run `/plugin marketplace add cursor/plugins`, then `/plugin install pstack@cursor-plugins`. Claude Code prefixes plugin commands, so each command in this guide takes a `pstack:` prefix there, such as `/pstack:setup-pstack`, which writes its model rule to `~/.claude/rules/pstack-models.md`. The [Claude Code adapter](../harness/claude-code.md) covers the other differences.
+For a local checkout, run `codex plugin marketplace add .` from the repository root, then run `codex plugin add spstack@softprobe-spstack`.
 
-## Pick your models
+## Set optional model preferences
 
-Run:
+Run `$setup-pstack` only if you want role-specific delegate preferences. The default is to inherit the current Codex session model and reasoning effort.
 
-```text
-/setup-pstack
-```
+The setup skill writes user configuration to `$CODEX_HOME/pstack-models.yaml`, or `~/.codex/pstack-models.yaml` when `CODEX_HOME` is unset. It uses only values supported by the active Codex collaboration tools. Start a new session after changing the file.
 
-[`/setup-pstack`](../../skills/setup-pstack/SKILL.md) detects the models you have access to, asks for a reasoning budget, shows you each role (code delegates, judgment, the review panels), and asks what you want. Answer the questions. It writes `~/.cursor/rules/pstack-models.mdc`, a small rule every pstack skill reads.
+## Create a project verification skill
 
-The defaults run at `xhigh` reasoning, the same as the `large` budget. `unlimited` lifts each model to its highest tier, up to `max`. Opus goes to `max`. Grok tops out at `xhigh`, so it stays there. `medium` and `small` lower the reasoning and spend fewer tokens.
+If your repository has no app driver, run `$create-verification-skill`. The skill creates `.agents/skills/verify-<app>/` with launch, health-check, drive, evidence, and cleanup steps for your app. It also creates a feature map under `features/`.
 
-You only override what you care about. A role with no line in the rule keeps the skill's default. To restore a default, delete that role's line. A rerun of `/setup-pstack` keeps any role whose model differs from the default. When a default changes, a rule written before the change still pins the old default, so delete those role lines, or delete the file, then run `/setup-pstack` again.
-
-You might be wondering what happens if you use Auto. Set a role to `inherit-parent` or `auto` and pstack omits the subagent `model` field, so the subagent inherits your parent chat model. Both values mean the same thing, and neither is a model slug. For a panel role the value is a list, and one subagent runs per entry, so the list length sets the panel size. Setup also configures `swarm workers`, the default model for every `/swarm` worker unless a race names a model for each arm.
-
-## Accept the verification offers, or don't
-
-At the end of setup, `/setup-pstack` looks for a way to prove app behavior in your project, either a `verify-*` skill or an existing harness. If it finds neither, it offers once to generate one with [`/create-verification-skill`](../../skills/create-verification-skill/SKILL.md).
-
-Say yes and it writes `.cursor/skills/verify-<app>/`, a project-local skill that teaches agents to drive your app the way a user does. It proves the skill works once before handing it over. Say no and setup moves on. You can run `/create-verification-skill` yourself any time. [Verify and ship](./06-verify-and-ship.md#create-a-project-verification-skill) covers it in depth.
-
-If you're new to pstack, say yes. An agent that can check its own work keeps going until the check passes. An agent that can't hands every result back to you to check by hand. Of everything in this guide, the verification skill pays off the most.
-
-Then setup offers once to generate a formal verification skill with [`/create-formal-verification-skill`](../../skills/create-formal-verification-skill/SKILL.md), unless the project already has one. Tests check the cases someone thought to write. A formal verification skill checks one key property of your code, such as "a job never runs twice at once", in every case within a stated scope. Say yes when your code has concurrency, retries, a state machine, or a parser, where a bug is costly and tests rarely reach the case that breaks. Otherwise say no, and run it later if that changes. [Verify and ship](./06-verify-and-ship.md#prove-a-property-with-a-formal-verification-skill) covers it.
-
-After setup, start a new chat. The model rule applies to new sessions.
-
-## Keep the cost in check
-
-pstack spends extra tokens on subagents and review panels. That's the price of the rigor. To spend fewer:
-
-- Rerun `/setup-pstack` and pick a smaller reasoning budget or cheaper models. A strong model in the main chat with cheaper, faster models in the code roles is a good split.
-- Set a role to `auto` or `inherit-parent` so it runs on the chat's own model.
-- Shorten a panel list. Each entry runs one subagent.
-- Save `/poteto-mode` for work that needs rigor. A small, obvious edit doesn't.
+Use `$create-formal-verification-skill` when you need to check a property that tests rarely reach, such as a concurrency invariant, retry rule, state machine, or parser condition.
 
 ## Run your first task
 
-Pick something real but small, and describe it the way you'd describe it to a colleague:
+Start with a small, real change and a check that can pass or fail:
 
 ```text
-/poteto-mode add a --json flag to this command. text output stays byte-identical. verify both.
+$poteto-mode add a --json flag to this command. Keep text output byte-identical. Verify both formats.
 ```
 
-Watch the todo list. Its first items are the matched playbook's steps copied in, the Feature playbook for this prompt. If `/poteto-mode` skips a step, the step stays in the list with `skip: <reason>`, so you can see what it chose not to do.
+`$poteto-mode` selects a playbook and turns its steps into a checklist. Invoke it again when you start a new task. For rules that need to apply across tasks, put them in the repository's `AGENTS.md`.
 
-From here you can type normal follow-ups. To keep `/poteto-mode` on for the whole chat, pick it from the `/` menu with Option+Enter (Mac) or Alt+Enter (Windows) instead of Enter. That makes it a [Custom Mode](https://cursor.com/docs/skills#using-a-skill-as-a-custom-mode), which stays in context on every turn until you exit it. Custom Modes are available in the Agents Window and the CLI. Plain Enter attaches the skill to one message, and it fades as the chat moves on.
-
-Next: [Route work through `/poteto-mode`](./02-poteto-mode.md).
+Next: [Route work through `$poteto-mode`](./02-poteto-mode.md).

@@ -1,4 +1,0 @@
-defaults:
-  model: inherit-parent
-  reasoning_effort: inherit-parent
-roles: {}
