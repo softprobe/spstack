@@ -66,7 +66,7 @@ $unslop the readme changes, no emdashes
 
 You'll develop your own shorthand. The skill reads intent fine from terse prompts like `unslop that, tighten it`.
 
-## Strip the comments with `$no-comments`
+## Review comments with `$no-comments`
 
 Comments need their own pass, and not from the agent that wrote them. An author defends its comments the way you'd defend yours. So before review, hand them to fresh eyes:
 
@@ -74,7 +74,7 @@ Comments need their own pass, and not from the agent that wrote them. An author 
 $no-comments the diff
 ```
 
-[`$no-comments`](../../skills/no-comments/SKILL.md) gives a separate Codex reviewer the role in [`comment-sicko.md`](../../skills/no-comments/references/comment-sicko.md) when collaboration is available. The reviewer reports only. It keeps license headers, public API contracts, links that explain constraints code cannot express, and behavior forced by an external dependency. If no independent reviewer is available, the skill applies the same keep list itself and states that the review was not independent.
+[`$no-comments`](../../skills/no-comments/SKILL.md) gives a separate Codex reviewer the role in [`comment-sicko.md`](../../skills/no-comments/references/comment-sicko.md) when collaboration is available. The reviewer reports only. It removes narration and redundant or contradicted comments while preserving concise rationale that code cannot explain, including business constraints, design choices, and operational lessons. The reviewer checks relevant contracts, design docs, ADRs, issues, PRs, and history; when useful rationale cannot be confirmed or refuted, it reports it as unverified instead of deleting it. If no independent reviewer is available, the skill applies the same rules itself and states that the review was not independent.
 
 `$unslop` cleans up prose. `$no-comments` reviews code comments with a fresh perspective.
 

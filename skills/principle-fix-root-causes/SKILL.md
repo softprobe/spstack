@@ -17,5 +17,5 @@ When debugging, fix the fault, not the place where it surfaced. The symptom is w
 - Ask whether the state that triggered the symptom is legitimate. If the system may be in that state, the code that broke on it is the root cause, and handling the state there is the fix. If the state should never exist, a check where it broke hides the bug. Find what produced the state. Guards, retries, swallowed errors, clamped values, and discarded state are the usual ways to hide a bug.
 - When something fails only after a restart, suspect persisted state first: config files, caches, lock files, serialized state.
 - Check for the pattern, not just the instance. Find every place with the same fault and fix them all.
-- If a workaround needs a paragraph-long comment to justify it, the code is wrong. Fix the code, not the comment.
+- If a workaround needs a paragraph to explain accidental complexity, investigate and fix the underlying fault where possible. Do not mistake independent product, business, security, or operational rationale for a code defect; preserve that context, preferably in a linked decision record.
 - If the deciding fact took a deep dig to find, propose the cheap, always-on signal that would have shown it at first look.

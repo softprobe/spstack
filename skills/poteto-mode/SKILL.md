@@ -107,7 +107,7 @@ Every playbook ends with a reply written this way, PR link as `https://github.co
 
 ## Comments
 
-Comments follow the same rule as the reply. Write them clean as you go. Keep a comment only for a non-obvious *why* the code can't show. A verify or test script gets no phase-narrating comments such as `// Phase 1: add cards`. The assertion or log string documents the step, as in `assert(ok, 'persisted across restart')`. This applies to every file you produce, including the delegate's diff.
+Comments follow the same rule as the reply. Keep a concise source comment beside code when it explains a durable, non-obvious constraint or design choice that a later change could violate without context. This includes product and business constraints, security and privacy decisions, protocol behavior, and operational lessons. Check relevant contracts, design docs, ADRs, issues, PRs, history, and caller-provided context; code alone may not reveal why a choice was made. If specific, useful rationale cannot be confirmed or refuted, preserve it and report it as unverified instead of deleting it. Link to a durable decision record when useful. Prefer types, runtime checks, tests, or lints to enforce constraints, while keeping comments that explain why the enforcement exists. Flag enforcement gaps separately. Do not comment obvious behavior, restate code, narrate phases, or use a comment to require approval. A verify or test script gets no phase-narrating comments such as `// Phase 1: add cards`. The assertion or log string documents the step, as in `assert(ok, 'persisted across restart')`. This applies to every file you produce, including the delegate's diff.
 
 ## Playbooks
 
