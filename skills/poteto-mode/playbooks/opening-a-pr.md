@@ -8,6 +8,8 @@ Invoked at the end of every other playbook.
 
 **PRs.** Inspect the diff for narrating comments, unsupported guards, dead paths, and unrelated edits before commit. Run `$no-comments` before review. Write every PR title, description, and commit body with `$technical-writing`, then apply `$unslop`.
 
+Recheck the **Scope gate** in [`../SKILL.md`](../SKILL.md) against the final diff. Every change must map to a requested acceptance condition or a proven dependency. Move unrelated improvements to follow-up notes and remove them from the branch.
+
 **Titles.** Use Conventional Commits `type(scope): subject`, with no trailing period. Choose a type such as `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, or `perf`. Use the changed area as the scope. Keep the subject short and imperative.
 
 **Descriptions.** The PR body is a one-minute briefing, not a lab notebook, for a reviewer who has the diff. It says why the change exists, what it leaves out, what it could break, and how you proved it works. Write short, simple sentences with few identifiers, no walls of text. The body becomes the squash commit body, so keep that commit under about 40 lines. Use `##` headings, not bold lead-ins, in this order, and drop a section with nothing to say:
