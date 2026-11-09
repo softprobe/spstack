@@ -1,14 +1,15 @@
 ---
 name: why
-description: "Use for 'why does X work this way', 'why we picked Y', design rationale, regressions, postmortems, or data-backed thresholds. Discovers available MCPs and queries each evidence category (source control, issue tracker, long-form docs, real-time chat, infrastructure observability, error tracking, product analytics warehouse) in parallel, then returns a cited read on decisions and tradeoffs. Use how for runtime behavior."
+description: "Use for /why, 'why does X work this way', 'why we picked Y', design rationale, regressions, postmortems, or data-backed thresholds. Discovers available MCPs and queries each evidence category (source control, issue tracker, long-form docs, real-time chat, infrastructure observability, error tracking, product analytics warehouse) in parallel, then returns a cited read on decisions and tradeoffs. Use how for runtime behavior."
 ---
 
 
 # Why
 
-Investigate the motivation and intent behind code. The companion `how` skill answers what the code does and how it works. `why` answers what forces led to its shape.
+Investigate the motivation and intent behind code. The companion `how` skill (`/how`) answers what the code does and how it works. `why` answers what forces led to its shape.
 
-Use Codex collaboration tools only when the session exposes them and delegation is permitted. Follow the active tool schema. Ask investigators not to edit, and give each one a distinct evidence source. If collaboration is unavailable, investigate the relevant sources serially. Use role-specific model preferences from `$CODEX_HOME/pstack-models.yaml`, or `~/.codex/pstack-models.yaml` when `CODEX_HOME` is unset, only when the active tool accepts model selection. Otherwise inherit the current session model.
+Use `invoke_subagent` (`TypeName: "research"` or `"self"` when MCP tools are needed) when delegation is permitted. Ask investigators not to edit, and give each one a distinct evidence source. If delegation is disallowed, investigate the relevant sources serially. Use role-specific model preferences from `.agents/pstack-models.yaml` or `~/.gemini/config/pstack-models.yaml` when set to a valid `Model` tier (`inherit`, `flash_lite`, `flash`, `pro`); otherwise pass `Model: "inherit"`.
+
 ## Operating Posture
 
 Operate as a **careful, cautious, and precise investigator**. Be honest about what you know vs what you're inferring. Read `references/epistemics.md` for the full confidence framework and phrasing guide. The synthesizer must follow it.
@@ -29,7 +30,7 @@ Before the investigation, build the seed context inline: file paths and line ran
 
 ### Discovery
 
-Inspect the tools and MCP servers available in the current Codex session. Use their descriptions and schemas to map them to evidence categories. Do not claim a search through a connector that is not available.
+Inspect the tools and `<mcp_servers>` available in the current Antigravity session (reading `<appDataDir>/mcp/<serverName>/<toolName>.json` for lazy MCP tools as needed). Use their descriptions and schemas to map them to evidence categories. Do not claim a search through a connector that is not available.
 
 Map each available MCP to one evidence category:
 
@@ -43,7 +44,7 @@ Map each available MCP to one evidence category:
 
 Source control is always available through git and `gh`. For the other six, classify using the MCP name, server instructions, tool names, and resource descriptors. If an MCP could fit more than one category, choose the one matching its primary evidence. Record ambiguous cases in the coverage map.
 
-When Codex collaboration is available, spawn one investigator per matching evidence category, each with one source. Do not ask a delegate to cover multiple unrelated connectors. Without collaboration tools, query the available sources serially and label the reduced coverage.
+When delegation is permitted, spawn one investigator subagent per matching evidence category via `invoke_subagent`, each with one source. Do not ask a delegate to cover multiple unrelated connectors. Without delegation, query the available sources serially and label the reduced coverage.
 
 Each investigator's prompt uses `references/investigator-prompt.md`, plus:
 - the category playbook `references/sources/<source>.md` for the selected MCP, adapted from the examples in `references/source-playbook.md`
@@ -73,7 +74,7 @@ If your scope assessment suggests a single-commit trivial target where the PR de
 
 ## Step 4. Synthesize
 
-When Codex collaboration is available, spawn one synthesizer. Otherwise synthesize the findings in the current session. Give the synthesizer:
+When delegation is permitted, spawn one synthesizer subagent (`invoke_subagent` with `TypeName: "research"` or `"self"`). Otherwise synthesize the findings in the current session. Give the synthesizer:
 1. The investigator findings, including any null results and any categories skipped with justification
 2. The code anchor
 3. The user's original question

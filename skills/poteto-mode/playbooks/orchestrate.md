@@ -2,24 +2,24 @@
 
 Coordinate a long-running project made of many independent work units. The coordinator owns scope, dependencies, and review; each worker owns only the unit assigned to it.
 
-Use Codex collaboration tools when the current session exposes them and the user and project permit delegation. Otherwise work serially, reduce the active scope, or report why the requested parallel program cannot proceed. Do not assume workers run in the cloud or persist after the session ends.
+Use Antigravity subagent tools (`invoke_subagent`, `manage_subagents`, `send_message`) when the user and project permit delegation. Otherwise work serially, reduce the active scope, or report why the requested parallel program cannot proceed.
 
 #### Set up the program
 
 - Define the program goal, completion checks, phases, dependencies, and decisions that require the user.
-- Keep durable state in a project plan or checkpoint under the repository's documentation convention. Record each unit's owner, paths, branch or worktree, current revision, evidence, and next action.
+- Keep durable state in a project plan (`docs/plans/<short-name>.md`) or Antigravity artifact (`<appDataDir>/brain/<conversation-id>/task.md`). Record each unit's owner (`conversation://<conversation-id>`), paths, branch or worktree, current revision, evidence, and next action.
 - Start with one representative unit and take it through implementation, review, and landing before expanding the pattern.
-- Keep delegation bounded by the available Codex tools. Give each worker a complete brief with scope, allowed paths, forbidden side effects, and the evidence to return.
+- Give each subagent a complete brief with scope, allowed paths, forbidden side effects, and the evidence to return.
 
 #### Coordinate work
 
-- Give each writing worker its own branch or worktree. Avoid overlapping file ownership unless one unit explicitly depends on another.
+- Give each writing worker its own branch or worktree (`Workspace: "share"` or `"branch"` on `invoke_subagent`, or a dedicated git worktree). Avoid overlapping file ownership unless one unit explicitly depends on another.
 - Start dependent work only after its prerequisite artifact or revision is available. Include the full relevant decisions and reports in a handoff; do not assume workers can see each other's context.
 - Review the actual diff or artifact and verify the completion evidence. A worker summary and green CI are inputs, not proof by themselves.
-- Use an independent reviewer for risky or user-facing work when the session can provide one. If it cannot, review directly and state that the review was not independent.
-- If a worker stalls, ask for a checkpoint through the available collaboration tool. Retry based on the failure cause, then narrow or drop work that remains stuck.
+- Use an independent reviewer subagent for risky or user-facing work when delegation is permitted. If it cannot run, review directly and state that the review was not independent.
+- If a worker stalls, check its state with `manage_subagents` or message it via `send_message`. Retry based on the failure cause, then narrow or drop work that remains stuck.
 - Check live PR and CI state before reporting. Reassess review evidence after each push because it applies to a specific revision.
-- Use an automation or scheduled task only when Codex exposes a suitable feature and the user has asked for ongoing follow-up. Otherwise keep the work in the active session and leave a durable checkpoint before stopping.
+- Use `schedule` for in-conversation timers/cron or the `automation` skill (`/automation`) when the user has asked for recurring background follow-up. Otherwise keep the work in the active session and leave a durable checkpoint before stopping.
 
 #### Close or hand off
 

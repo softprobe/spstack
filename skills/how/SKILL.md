@@ -1,6 +1,6 @@
 ---
 name: how
-description: Explain how code works, walk through a subsystem before a change, and identify where behavior belongs. Use for $how or questions about runtime flow, ownership, or layering. Use why for motivation.
+description: Explain how code works, walk through a subsystem before a change, and identify where behavior belongs. Use for /how or questions about runtime flow, ownership, or layering. Use why for motivation.
 ---
 
 # How
@@ -16,9 +16,7 @@ Separate the user's outcome and constraints from the proposed mechanism. Mark so
 - A narrow question about one function or module needs one pass through the source.
 - A subsystem spanning files or services needs two to four distinct research angles.
 
-If the Codex session exposes collaboration tools and the user and project instructions permit delegation, use them for independent read-only research. Ask each delegate not to edit. Follow the active tool schema. If collaboration is unavailable, inspect the angles serially and say so only if the answer needs parallel coverage.
-
-Read `$CODEX_HOME/pstack-models.yaml`, or `~/.codex/pstack-models.yaml` when `CODEX_HOME` is unset, only when the session supports choosing a delegate model. Use configured role preferences only when the tool accepts them. Otherwise inherit the current session model.
+When user and project instructions permit delegation, use `invoke_subagent` with `TypeName: "research"` for independent read-only exploration angles. Read `.agents/pstack-models.yaml` or `~/.gemini/config/pstack-models.yaml` if present and pass a configured `Model` tier (`inherit`, `flash_lite`, `flash`, `pro`) when set; otherwise pass `Model: "inherit"`. If delegation is disallowed, inspect the angles serially and say so only if the answer needs parallel coverage.
 
 ## Explore
 
@@ -29,11 +27,11 @@ For a complex scope, divide the work into distinct questions, such as:
 - Which boundaries, services, or callers affect it?
 - Which tests or runtime evidence show the behavior?
 
-Give each delegate the relevant files, the question it owns, and the requirement to cite paths and symbols. Do not have two delegates edit the same files.
+Give each subagent the relevant files, the question it owns (plus [`references/explorer-prompt.md`](references/explorer-prompt.md) when helpful), and the requirement to cite paths and symbols. Subagents are read-only and must not edit files.
 
 ## Synthesize
 
-Combine the findings into one explanation. Check important claims against source before presenting them. Separate observed behavior from inference.
+Combine the findings into one explanation (using [`references/explainer-prompt.md`](references/explainer-prompt.md) as a guide). Check important claims against source before presenting them. Separate observed behavior from inference.
 
 ## Output
 
@@ -41,6 +39,6 @@ Use only the sections that help answer the question:
 
 - **Overview**: the subsystem's purpose and entry point.
 - **Key concepts**: the data shapes and state owners.
-- **How it works**: the runtime sequence, with relevant paths and symbols.
+- **How it works**: the runtime sequence, with clickable `file:///absolute/path#Lstart-Lend` links for relevant paths and symbols.
 - **Where things live**: the module boundaries and callers.
 - **Gotchas**: verified edge cases or missing evidence.

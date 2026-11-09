@@ -1,6 +1,7 @@
 ---
 name: principle-foundational-thinking
 description: "Apply before defining persistent or cross-service contracts, or writing logic that chooses core types and data structures, sequences scaffold-vs-feature work, or shares state between concurrent actors. Get the data structures right so downstream code becomes obvious."
+disable-slash-command: true
 ---
 
 

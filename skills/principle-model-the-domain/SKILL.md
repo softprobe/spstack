@@ -1,6 +1,7 @@
 ---
 name: principle-model-the-domain
 description: "Apply when defining a persistent or cross-boundary domain shape, writing stateful logic, or when code branches a lot or repeats a shape assumption across files."
+disable-slash-command: true
 ---
 
 

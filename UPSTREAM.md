@@ -9,4 +9,4 @@ Spstack is based on the MIT-licensed `pstack` plugin from [cursor/plugins](https
 - Port date: 2026-11-03
 - License: MIT. See [LICENSE](./LICENSE).
 
-Spstack is a maintained fork. Its Codex plugin package and skills are adapted for Codex; the upstream Cursor package is not duplicated in this repository.
+Spstack is a maintained fork. Its Antigravity plugin package, subagents, and skills on this branch are adapted for native Google Antigravity; the upstream Cursor package is not duplicated in this repository.

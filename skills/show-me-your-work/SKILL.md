@@ -1,6 +1,6 @@
 ---
 name: show-me-your-work
-description: "Keep a reviewable decision trail for long-running or unattended work: a TSV log with one row per decision (what, why, evidence, result). Local by default; commit it when a reviewer needs the trail to trust the result. Use for $show-me-your-work, autonomous or multi-phase runs, or work a human reviews after stepping away."
+description: "Keep a reviewable decision trail for long-running or unattended work: a TSV log with one row per decision (what, why, evidence, result). Local by default; commit it when a reviewer needs the trail to trust the result. Use for /show-me-your-work, autonomous or multi-phase runs, or work a human reviews after stepping away."
 ---
 
 
@@ -39,11 +39,11 @@ Use the helper `log.sh` beside this skill's `SKILL.md`, resolving its path from 
 
 Log decision points and checkpoints, not every action: a fork chosen, a unit completed with its verification result, a pivot or revert with its trigger, a blocker surfaced, a gate fixed. For loop runs, one row per iteration. Skip the trivial and self-evident.
 
-A run is one agent conversation, including its later turns and any summary of it. A pickup, a replacement agent, or a new chat starts a new run. When a run adds to a log that already has rows, its first row has phase `start`, and so does its first row after another run's `start` row. So a run that comes back to a log in a later turn first reads the log's last rows to see whether another run wrote since. A `start` row names the `ts` range of the rows before it that this run did not write, and its evidence names this run, such as its agent id. Use phase `start` for nothing else.
+A run is one agent conversation, including its later turns and any summary of it. A pickup, a replacement agent, or a new chat starts a new run. When a run adds to a log that already has rows, its first row has phase `start`, and so does its first row after another run's `start` row. So a run that comes back to a log in a later turn first reads the log's last rows to see whether another run wrote since. A `start` row names the `ts` range of the rows before it that this run did not write, and its evidence names this run, such as `conversation://<conversation-id>`. Use phase `start` for nothing else.
 
 ## Where it lives
 
-By default the log is a working artifact, not committed. Keep it at `decisions.tsv` in the work dir, or `.audit/<task-slug>.tsv` when several efforts run at once, and leave it out of git.
+By default the log is a working artifact, not committed. Keep it at `decisions.tsv` in the work dir, `.audit/<task-slug>.tsv` when several efforts run at once, or `<appDataDir>/brain/<conversation-id>/scratch/decisions.tsv`, and leave it out of git.
 
 Commit it only when the work is ambitious enough that a reviewer needs the trail to trust the result.
 
@@ -54,7 +54,7 @@ Commit it only when the work is ambitious enough that a reviewer needs the trail
 
 ## Audit the log against the run
 
-At the end of the run, check the log against the active conversation and live repository state. Use Codex conversation-history tools only when the current session exposes them. Do not inspect undocumented local databases or other workspaces. Walk the rows against what actually happened. Each stretch begins at one of this run's `start` rows, or at the first row if this run created the log, and ends at the next `start` row of another run:
+At the end of the run, check the log against the active conversation transcript (`<appDataDir>/brain/<conversation-id>/.system_generated/logs/transcript.jsonl`) and live repository state. Do not inspect undocumented local databases or unrelated workspaces. Walk the rows against what actually happened. Each stretch begins at one of this run's `start` rows, or at the first row if this run created the log, and ends at the next `start` row of another run:
 
 - Check that every row maps to a real decision or action.
 - Check that each row's evidence resolves and shows what the row claims.
@@ -64,7 +64,7 @@ Correct the log, not the story. The audit never edits or removes a row, even an 
 
 ## Independent review of the trail
 
-Before handing back, ask a separate Codex collaborator to review the trail when collaboration tools are available and delegation is permitted. Use a different supported model only when the current tool accepts model selection. The reviewer reads the audit trail and available run context, then flags what the user should inspect. It does not redo the work. If an independent review cannot run, audit the log yourself and state that limitation.
+Before handing back, ask a separate subagent (`invoke_subagent` with `TypeName: "research"` or `"self"`) to review the trail when delegation is permitted. The reviewer reads the audit trail and available run context, then flags what the user should inspect. It does not redo the work. If an independent review cannot run, audit the log yourself and state that limitation.
 
 - Decisions logged with weak or absent evidence.
 - Verification steps skipped or claimed without proof in the transcript.

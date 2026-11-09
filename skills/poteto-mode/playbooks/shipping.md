@@ -3,7 +3,7 @@
 Land a verified pull request or stack after the user asks to ship or merge it. For review and CI work without merge authorization, use `babysit.md` and stop at merge-ready.
 
 1. Resolve the repository's forge and inspect the open PRs, their bases, current heads, review threads, and checks. Identify the lowest unmerged PR and any independent PRs that do not depend on it.
-2. Verify each PR against the exact head that would land. Prefer a reviewer who did not write the change when Codex collaboration is available and permitted. Run the relevant unit and integration checks, plus a real-surface check for behavior that needs one. A self-review is useful but is not an independent verdict. Record unavailable checks as gaps.
+2. Verify each PR against the exact head that would land. Prefer a reviewer subagent (`invoke_subagent`) who did not write the change when delegation is permitted. Run the relevant unit and integration checks, plus a real-surface check for behavior that needs one. A self-review is useful but is not an independent verdict. Record unavailable checks as gaps.
 3. If the head changes after review, rerun checks affected by the change and refresh the review. Compare the actual diff, not just commit IDs, when deciding whether prior evidence still applies.
 4. Land only the contiguous verified run from the bottom of a stack. Merge one PR at a time with the resolved forge, then read it back to confirm it is merged before moving to its child.
 5. Before each merge, confirm the target branch, current head, required checks, review state, and branch protection requirements. Do not force-push, bypass a required review, or enable auto-merge unless the user asked for that action and the repository supports it safely.

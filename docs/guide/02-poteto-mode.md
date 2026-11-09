@@ -1,8 +1,8 @@
-# Route work through `$poteto-mode`
+# Route work through `/poteto-mode`
 
-`$poteto-mode` is the front door. You give it a goal, it matches one of twenty-three playbooks, adds the playbook steps to a checklist, and calls the other skills as needed. In this page you learn what a good prompt looks like, and how little of one you actually need.
+`/poteto-mode` is the front door. You give it a goal, it matches one of twenty-three playbooks, adds the playbook steps to a checklist, and calls the other skills as needed. In this page you learn what a good prompt looks like, and how little of one you actually need.
 
-![A dispatcher pulls a switch lever to route robots on rail handcars toward lit gates, under a $poteto-mode departure board listing BUG FIX, FEATURE, and INVESTIGATION.](./images/router.jpg)
+![A dispatcher pulls a switch lever to route robots on rail handcars toward lit gates, under a /poteto-mode departure board listing BUG FIX, FEATURE, and INVESTIGATION.](./images/router.jpg)
 
 ## What happens to your prompt
 
@@ -32,7 +32,7 @@ The diagram shows the common routes. There are also playbooks for hillclimbing a
 You don't write a spec. You say what's wrong or what you want, plus anything you already know that saves the agent time:
 
 ```text
-$poteto-mode users get two notifications after a retry. repro first, then fix and verify.
+/poteto-mode users get two notifications after a retry. repro first, then fix and verify.
 ```
 
 That's a Bug fix prompt. "repro first" is a real constraint, not politeness, and the playbook honors it. The checklist starts with the Bug fix steps. A skipped step stays visible with `skip: <reason>`.
@@ -50,7 +50,7 @@ A useful prompt carries up to five things, and each one fits in a sentence:
 Here's one prompt with all five:
 
 ```text
-$poteto-mode the csv export drops its last row since yesterday's deploy. failing job id is 4812. repro first, then fix. done means the 60k-row fixture exports every row. show me the row counts before and after.
+/poteto-mode the csv export drops its last row since yesterday's deploy. failing job id is 4812. repro first, then fix. done means the 60k-row fixture exports every row. show me the row counts before and after.
 ```
 
 Two things are worth leaving out:
@@ -61,25 +61,25 @@ Two things are worth leaving out:
 For a noisy report, such as a long thread or a vague bug, make the restatement the first step:
 
 ```text
-$poteto-mode read this thread. restate the underlying issue in your own words, in plain english. don't change any code yet.
+/poteto-mode read this thread. restate the underlying issue in your own words, in plain english. don't change any code yet.
 ```
 
-A misreading shows up in the restatement, before any code exists. Correct it there, and it costs you one message instead of one wrong fix. For the restatement alone, with no playbook, run [`$in-your-own-words`](../../skills/in-your-own-words/SKILL.md). It restates what the agent thinks your goals are and what problem you're trying to solve.
+A misreading shows up in the restatement, before any code exists. Correct it there, and it costs you one message instead of one wrong fix. For the restatement alone, with no playbook, run [`/in-your-own-words`](../../skills/in-your-own-words/SKILL.md). It restates what the agent thinks your goals are and what problem you're trying to solve.
 
-When you're unsure whether a prompt is aimed right, run [`$sharpen`](../../skills/sharpen/SKILL.md) on it before you send it:
+When you're unsure whether a prompt is aimed right, run [`/sharpen`](../../skills/sharpen/SKILL.md) on it before you send it:
 
 ```text
-$sharpen write a migration guide for the v2 config format.
+/sharpen write a migration guide for the v2 config format.
 ```
 
-The agent says what a top professional would do that you didn't ask for, the rawest material they would start from, the methods and tools they would use, and what other than you or the agent would show the result is right. Then it rewrites your prompt to ask for exactly that, deeper but not bigger, and leaves your choices open. It doesn't do the task. Read the rewrite, then send it, for example with `$poteto-mode`.
+The agent says what a top professional would do that you didn't ask for, the rawest material they would start from, the methods and tools they would use, and what other than you or the agent would show the result is right. Then it rewrites your prompt to ask for exactly that, deeper but not bigger, and leaves your choices open. It doesn't do the task. Read the rewrite, then send it, for example with `/poteto-mode`.
 
 ## Follow up short
 
 When the conversation already carries the context, the prompt shrinks to almost nothing. All of these are enough:
 
 ```text
-$poteto-mode do it
+/poteto-mode do it
 ```
 
 ```text
@@ -90,26 +90,26 @@ continue
 keep going until done
 ```
 
-Short works because the playbook holds the structure. Invoke `$poteto-mode` again when you start a new task. For rules that need to apply across tasks, add them to the repository's `AGENTS.md`.
+Short works because the playbook holds the structure. Invoke `/poteto-mode` again when you start a new task. For rules that need to apply across tasks, add them to the repository's `AGENTS.md` or `.agents/rules/`.
 
 ## Switch tasks with "new task"
 
 A long chat accumulates context from the last task. When you change subjects, say so:
 
 ```text
-$poteto-mode new task. figure out why the cache entry survives logout. don't change any code yet.
+/poteto-mode new task. figure out why the cache entry survives logout. don't change any code yet.
 ```
 
-"new task" tells `$poteto-mode` to re-match rather than continue the prior playbook. "don't change any code yet" pins this one to Investigation. Without those two phrases, a mode mid-Feature tends to treat your question as the next feature step.
+"new task" tells `/poteto-mode` to re-match rather than continue the prior playbook. "don't change any code yet" pins this one to Investigation. Without those two phrases, a mode mid-Feature tends to treat your question as the next feature step.
 
 ## Isolate parallel work
 
-Parallel agents can collide when they write to the same worktree, use the same port, or share build output. Use a separate worktree for each worker that writes. Codex collaboration tools vary by session, so do not assume workers run on separate machines.
+Parallel agents can collide when they write to the same worktree, use the same port, or share build output. Use a separate worktree (`Workspace: "share"` or `"branch"` in `invoke_subagent`, or `git worktree add`) for each worker that writes.
 
 When agents can access separate worktrees, ask for one per worker:
 
 ```text
-$poteto-mode new task. branch off <base> in a fresh worktree, then port the parser change there.
+/poteto-mode new task. branch off <base> in a fresh worktree, then port the parser change there.
 ```
 
 Each task in its own branch and worktree means no agent stomps another's files. Worktrees cost disk and machine resources, so a laptop runs only a handful at once. The [Opening a PR playbook](../../skills/poteto-mode/playbooks/opening-a-pr.md) already works from a worktree for code changes, so mostly you only say this when a specific base or location matters.
@@ -117,22 +117,22 @@ Each task in its own branch and worktree means no agent stomps another's files. 
 Worktrees accumulate. When disk gets tight, ask:
 
 ```text
-$poteto-mode what's eating my disk? prune the worktrees that are safe to prune.
+/poteto-mode what's eating my disk? prune the worktrees that are safe to prune.
 ```
 
-The [Worktree cleanup playbook](../../skills/poteto-mode/playbooks/worktree-cleanup.md) reports merge state, uncommitted work, and PR state. Confirm active or pinned chats in Codex before pruning a clean tree; the script cannot inspect chat use.
+The [Worktree cleanup playbook](../../skills/poteto-mode/playbooks/worktree-cleanup.md) reports merge state, uncommitted work, and PR state. Confirm active or pinned conversations in Antigravity before pruning a clean tree; the script cannot inspect chat use.
 
 ## Leave it running
 
 When you step away, say what done means and go:
 
 ```text
-$poteto-mode im stepping away. keep going until the migration check reports zero old callers. log your decisions.
+/poteto-mode im stepping away. keep going until the migration check reports zero old callers. log your decisions.
 ```
 
-Work you'll review later routes through [`$figure-it-out`](../../skills/figure-it-out/SKILL.md), which designs the run's phases and keeps a [`$show-me-your-work`](../../skills/show-me-your-work/SKILL.md) decision log. [Run a long task safely](./07-overnight.md) covers the handoff and session limits.
+Work you'll review later routes through [`/figure-it-out`](../../skills/figure-it-out/SKILL.md), which designs the run's phases and keeps a [`/show-me-your-work`](../../skills/show-me-your-work/SKILL.md) decision log. [Run a long task safely](./07-overnight.md) covers the handoff and session limits.
 
-**Pitfall:** don't enumerate skills in your prompt ("use $how, then $architect, then $arena..."). The playbook already sequences them, and a hand-written sequence usually reorders or drops steps the playbook would have kept. Name a skill only when you want to override a specific choice.
+**Pitfall:** don't enumerate skills in your prompt ("use /how, then /architect, then /arena..."). The playbook already sequences them, and a hand-written sequence usually reorders or drops steps the playbook would have kept. Name a skill only when you want to override a specific choice.
 
 Read [`poteto-mode`](../../skills/poteto-mode/SKILL.md) itself for the full routing rules.
 

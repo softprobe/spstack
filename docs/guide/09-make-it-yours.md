@@ -1,36 +1,36 @@
 # Make Spstack yours
 
-Start with `$poteto-mode` and the focused skills you need. Add project instructions or a new skill when the same need appears more than once.
+Start with `/poteto-mode` and the focused skills you need. Add project instructions or a new skill when the same need appears more than once.
 
 ## Create a personal mode
 
-Run `$automate-me` to draft a personal skill from preferences you state or history Codex exposes in the current session. Codex does not guarantee a transcript path. If history tools are unavailable, give it examples instead of asking it to search local application data.
+Run `/automate-me` to draft a personal skill from preferences you state or recent Antigravity conversation transcripts (`<appDataDir>/brain/*/.system_generated/logs/transcript.jsonl`). If no transcript history is available, give it examples directly.
 
-Personal skills live in `~/.agents/skills/<name>-mode/`. Project skills live in `.agents/skills/<name>-mode/`. Use `$skill-creator` when it is available, and ask for a review before saving a subjective preference skill.
+Personal skills live in `~/.gemini/config/skills/<name>-mode/` (or `~/.agents/skills/<name>-mode/`). Project skills live in `.agents/skills/<name>-mode/`. Consult Antigravity's built-in `agy-customizations` skill when authoring customizations, and ask for a review before saving a subjective preference skill.
 
-## Capture a lesson with `$reflect`
+## Capture a lesson with `/reflect`
 
 After a task that exposed a durable lesson, run:
 
 ```text
-$reflect review this conversation for lessons that would change future decisions. Propose skill edits and wait for my approval.
+/reflect review this conversation for lessons that would change future decisions. Propose skill edits and wait for my approval.
 ```
 
-`$reflect` proposes focused skill changes. It waits for approval before editing skills.
+`/reflect` proposes focused skill changes. It waits for approval before editing skills.
 
-## Fix repeated mistakes with `$correct`
+## Fix repeated mistakes with `/correct`
 
-When agents repeat the same mistake, use `$correct` to find a structural fix. Prefer architecture, types, lint, or tests before adding another prose rule.
+When agents repeat the same mistake, use `/correct` to find a structural fix. Prefer architecture, types, lint, or tests before adding another prose rule.
 
 ## Author a focused skill
 
-When you know the workflow you want to capture, ask `$skill-creator` to create a skill. If that built-in skill is unavailable, use the [Authoring a skill playbook](../../skills/poteto-mode/playbooks/authoring-a-skill.md). Keep the skill under `.agents/skills/<name>/` for the current project, or `~/.agents/skills/<name>/` for personal use.
+When you know the workflow you want to capture, use the [Authoring a skill playbook](../../skills/poteto-mode/playbooks/authoring-a-skill.md) and Antigravity's `agy-customizations` skill. Keep the skill under `.agents/skills/<name>/` for the current project, or `~/.gemini/config/skills/<name>/` for personal use.
 
-Use [`$create-verification-skill`](../../skills/create-verification-skill/SKILL.md) for an app driver and feature map. Use [`$create-formal-verification-skill`](../../skills/create-formal-verification-skill/SKILL.md) for a formal property checker.
+Use [`/create-verification-skill`](../../skills/create-verification-skill/SKILL.md) for an app driver and feature map. Use [`/create-formal-verification-skill`](../../skills/create-formal-verification-skill/SKILL.md) for a formal property checker.
 
 ## Evaluate a skill change
 
-A skill affects future work, so evaluate it with realistic tasks before relying on it. The [Eval playbook](../../skills/poteto-mode/playbooks/eval.md) uses blinded comparisons when the current Codex session can create isolated candidates. If the session cannot do that, run a smaller serial check and state the limitation.
+A skill affects future work, so evaluate it with realistic tasks before relying on it. The [Eval playbook](../../skills/poteto-mode/playbooks/eval.md) uses blinded comparisons with Antigravity subagents (`invoke_subagent`) when delegation is permitted. If the session cannot run isolated subagents, run a smaller serial check and state the limitation.
 
 ## Keep scopes separate
 
