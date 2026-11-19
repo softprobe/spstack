@@ -2,6 +2,8 @@
 
 **You own the design. Plan, review, verify.** Use Codex collaborators for independent work when available and permitted. Otherwise implement serially.
 
+Apply the **Scope gate** in [`../SKILL.md`](../SKILL.md) before design or implementation. Write the requested outcome and acceptance conditions in the checkpoint. Keep adjacent concerns as follow-ups unless evidence proves they block an acceptance condition.
+
 1. `how` over the affected subsystem.
 2. `architect` for parallel design exploration.
 3. Write the throughput checkpoint as four todo items. A dimension that genuinely does not apply (single file, no fan-out) keeps its item with `n/a: <reason>` rather than being dropped:

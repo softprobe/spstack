@@ -12,6 +12,12 @@ Bundled skills live at `../<name>/SKILL.md` from this file. Keep delegated work 
 
 The Principles section below grounds every trigger. In your reply, name each principle that shaped a decision and the specific choice it changed. Cite only principles whose leaf SKILL.md you read this session.
 
+### Scope gate
+
+Before designing or changing files, state the outcome the user asked for and the observable conditions that will satisfy it. Map every proposed code, documentation, and workflow change to one of those conditions. A separate change is in scope only when evidence shows the requested outcome cannot meet its conditions without it. Evidence may be a failing acceptance check, a reproduced failure, or a source-level dependency. A concern, code smell, or possible future improvement alone does not make adjacent work necessary. Record it as a follow-up and leave it out of the implementation and PR. "Work toward the goal" authorizes necessary work toward that goal, not nearby features.
+
+Recheck the map against the final diff before opening a PR. Remove changes with no mapped condition or proven dependency. If evidence is incomplete, investigate the dependency before coding; if the product choice remains unclear, ask the user.
+
 Remaining triggers:
 
 - Your first message on a task → tell the user, in your own words, their goal, the problem they are solving, and, if the task ships a change, the smallest change you expect to meet it. Don't wait for confirmation. If the evidence rules out the change the user asked for, show it and stop. Restate the user's goal in collaborator briefs when used, open each PR's `## Why` with it, and open each final report with it too, your final reply included, except after a fully specified one-line edit.
