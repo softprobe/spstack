@@ -1,7 +1,7 @@
 {
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "spstack",
-  "displayName": "Spstack",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "description": "Antigravity-native engineering workflows for deliberate design, focused implementation, and verified changes.",
   "logo": "assets/logo.png",
   "author": {
@@ -10,9 +10,13 @@
   },
   "homepage": "https://github.com/softprobe/spstack",
   "repository": "https://github.com/softprobe/spstack",
-  "suggestedPrompts": [
-    "/poteto-mode Investigate how this subsystem works and explain the runtime flow",
-    "/architect Sketch the data shapes and module boundaries before implementing",
-    "/interrogate Stress-test the current branch diff with runnable checks"
+  "license": "MIT",
+  "keywords": [
+    "antigravity",
+    "engineering",
+    "skills",
+    "workflows",
+    "verification",
+    "poteto-mode"
   ]
 }

@@ -52,11 +52,11 @@ In context, that's enough. [`/tdd`](../../skills/tdd/SKILL.md) writes the smalle
 
 ## Load the TypeScript rules by name
 
-[`typescript-best-practices`](../../skills/typescript-best-practices/SKILL.md) turns the type-system principles into concrete rules: discriminated unions, `unknown` at boundaries, exhaustive variants, schema-derived types. Invoke `/typescript-best-practices` when a task touches `.ts` or `.tsx` files.
+[`typescript-best-practices`](../../skills/typescript-best-practices/SKILL.md) turns the type-system principles into concrete rules: discriminated unions, `unknown` at boundaries, exhaustive variants, schema-derived types. It doesn't load on its own, so type `/typescript-best-practices` when a task touches `.ts` or `.tsx` files.
 
 ## Clean before you commit
 
-Before each commit, inspect the diff for narrating comments, unsupported guards, dead paths, and unrelated edits. Use [`/unslop`](../../skills/unslop/SKILL.md) for PR descriptions and commit messages. Use [`/no-comments`](../../skills/no-comments/SKILL.md) when comments need a separate review.
+The [Opening a PR playbook](../../skills/poteto-mode/playbooks/opening-a-pr.md) runs `/deslop` on the diff before each commit, and poteto-mode applies [`/unslop`](../../skills/unslop/SKILL.md) to the PR description and commit bodies. `/deslop` ships in the `cursor-team-kit` plugin, not in pstack. If you don't have it, ask for the same outcome in plain words: remove narrating comments, unsupported guards, dead compatibility paths, and unrelated edits.
 
 For prose, `/unslop` takes a target and any extra rules you have:
 
@@ -74,10 +74,10 @@ Comments need their own pass, and not from the agent that wrote them. An author 
 /no-comments the diff
 ```
 
-[`/no-comments`](../../skills/no-comments/SKILL.md) spawns an independent Antigravity subagent (`comment-sicko` or `research` with [`comment-sicko.md`](../../skills/no-comments/references/comment-sicko.md)) when delegation is permitted. The reviewer reports only. It removes narration and redundant or contradicted comments while preserving concise rationale that code cannot explain, including business constraints, design choices, and operational lessons. The reviewer checks relevant contracts, design docs, ADRs, issues, PRs, and history; when useful rationale cannot be confirmed or refuted, it reports it as unverified instead of deleting it. If no independent reviewer is available, the skill applies the same rules itself and states that the review was not independent.
+[`/no-comments`](../../skills/no-comments/SKILL.md) spawns [Comment Sicko](../../agents/comment-sicko.md) as a read-only reviewer. It removes narration and redundant or contradicted comments while preserving concise rationale that code cannot explain, including business constraints, design choices, and operational lessons. The reviewer checks relevant contracts, design docs, ADRs, issues, PRs, and history; when useful rationale cannot be confirmed or refuted, it reports it as unverified instead of deleting it.
 
-`/unslop` cleans up prose. `/no-comments` reviews code comments with a fresh perspective.
+The division of labor is worth keeping straight. `/deslop` cleans slop out of the code, `/unslop` cleans it out of prose, and `/no-comments` hands the comments to a reviewer who didn't write them.
 
-**Pitfall:** a diff with narrating comments, unsupported guards, and unrelated edits is harder to review. Remove that material before you commit.
+**Pitfall:** cleanup is not optional polish. A diff with narrating comments and defensive dead weight reads as unfinished to reviewers, and the extra code is where the next bug hides. If the diff feels padded, say `deslop it` before you commit, not after review calls it out.
 
 Next: [Verify and ship](./06-verify-and-ship.md).

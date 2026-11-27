@@ -1,9 +1,8 @@
 ---
 name: principle-redesign-from-first-principles
 description: "Apply when integrating a new requirement into an existing design."
-disable-slash-command: true
+disable-model-invocation: true
 ---
-
 
 # Redesign From First Principles
 

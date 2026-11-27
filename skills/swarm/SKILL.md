@@ -1,32 +1,41 @@
 ---
 name: swarm
-description: Run independent parallel checks across slices or race attempts, then combine the evidence into one report. Use for /swarm, "swarm this", or parallel coverage and exploration.
+description: "Fan out N parallel workers, drain them, and return one report. Use for /swarm, 'swarm this', or parallel coverage, races, gauntlets, and exploration."
+disable-model-invocation: true
 ---
 
 # Swarm
 
-Use a swarm when work divides into independent slices, or when several attempts at one brief would reveal useful alternatives. Keep ownership and outputs separate.
+## Start
 
-## Frame
+Open a todolist with one entry per phase before launching anything.
 
-1. State the completion predicate and the artifact or report the swarm must return.
-2. Choose a shape: partition into slices, race identical briefs, or combine both.
-3. For a race, declare `first pass`, `rank all`, or `best of` before running candidates.
-4. Read `.agents/pstack-models.yaml` or `~/.gemini/config/pstack-models.yaml` if present. Use the configured `swarm workers` model tier (`inherit`, `flash_lite`, `flash`, `pro`) when set; otherwise use `Model: "inherit"`.
-5. Give every worker a complete brief with the goal, owned slice, exact evidence to collect, output format, and verification steps.
+1. Frame
+2. Fan out
+3. Aggregate
+4. Report
 
-## Fan out
+## Phase A: Frame
 
-Use `invoke_subagent` when user and project instructions permit delegation. Spawn one subagent per slice (`TypeName: "research"` for read-only slices, or `"poteto-agent"` / `"self"` when running commands or writing files). Use `Workspace: "share"` or `"branch"`, a separate git worktree, or a separate scratch directory for workers that write. Subagents run in the background and automatically notify you when they finish; do not poll in a loop.
+1. State the done predicate and the artifact or report the swarm must return.
+2. Choose the shape. Partition into slices, race N workers on identical briefs, or mix both. For a race or mixed shape, declare `first pass`, `rank all`, or `best-of` before spawning.
+3. Pick the worker model from the `swarm workers` line in `~/.cursor/rules/pstack-models.mdc`. If the rule or that line is missing, use `claude-opus-5-5-high-fast`. For `auto` or `inherit-parent`, omit `model` so the workers run on the parent model. If the Task tool rejects a slug, use the default and say so. If it rejects the default, use the closest valid slug of the same family from its error message. For a model race, name each arm's model up front. Pick each subagent's reasoning level for the job, per the Subagents section of the **poteto-mode** skill.
+4. Give each worker its own writable output when it writes. When workers verify or measure commits, each brief names the exact SHAs. A measurement brief also names the method (sample count, what one sample is, order). The worker records both in its result.
 
-If delegation is unavailable or disallowed, run the same slices in sequence and report that they were sequential.
+## Phase B: Fan out
 
-If a worker stops or fails, continue with the remaining workers and record the missing slice.
+Spawn all N workers in one message with `subagent_type: generalPurpose`, `environment: "cloud"`, `run_in_background: true`, and the step 3 model, left unset for `auto` or `inherit-parent`. Use `environment: "local"` only when the worker needs access to something on the user's computer.
 
-## Aggregate
+When a worker must start from a non-default pushed branch, pass `cloud_base_branch`.
 
-Check every result against the named evidence. For measured work, require the exact revision and method. A missing result is a coverage gap, not a pass. For a race, apply the rule declared in Frame. Combine findings that share a cause. Do not paste raw worker output.
+Every brief stands alone. Include the goal, scope, exact slice or race arm, how to verify, and what to report. Reports use `PASS`, `ISSUES`, or `BLOCKED` with evidence. A worker that can prove a defect reports `ISSUES` and lists every issue it can prove, not only the first.
 
-## Report
+If a worker drops out, proceed with N-1 and note it.
 
-Return the completion predicate, the result per slice or candidate, verified issues, gaps or dropouts, and the selected race rule when one applies.
+## Phase C: Aggregate
+
+Read the terminal results. Drop a result that does not record the SHAs and method its brief names, and respawn that worker once. After a second miss, record a gap. A gap does not count as a pass. For coverage, every required slice needs a result. For a race, apply the selection rule declared up front. Use first pass, rank all, or best-of. Do not paste raw worker dumps.
+
+## Phase D: Report
+
+Return one consolidated in-chat report with a result table, issue one-liners, gaps or dropouts, and the race rule when used.

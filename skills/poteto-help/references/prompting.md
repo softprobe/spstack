@@ -37,8 +37,8 @@ A prompt states the intent and the check for done. The playbook supplies the ste
 
 ## Before stepping away
 
-- Say "im going to bed" or "im stepping away" (or use `/goal`) so the agent stops asking.
-- Write done as checks every iteration can run, and ask Antigravity to continue until it is met.
+- Say "im going to bed" or "im stepping away" so the agent stops asking.
+- Write done as checks every iteration can run, and give `/loop` that predicate.
 - Ask for a fresh worktree off a named base.
 - Pre-answer what the agent would stop for, such as "don't ask me before committing".
 - Ask for a decision log to audit later.

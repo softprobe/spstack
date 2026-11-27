@@ -1,44 +1,25 @@
 ---
 name: how
-description: Explain how code works, walk through a subsystem before a change, and identify where behavior belongs. Use for /how or questions about runtime flow, ownership, or layering. Use why for motivation.
+description: "Use for \"how does X work\", code walkthroughs before changing something, and placement / ownership / layering questions (\"where should this live\", \"which package owns this\", \"is this the right layer\"). Explains subsystem architecture, runtime flow, onboarding mental models. Use why for motivation."
+disable-model-invocation: true
 ---
 
 # How
 
-Explain the code well enough to give an engineer a working model of the subsystem. Trace real entry points, data, and runtime behavior. Do not annotate every line.
+Explore the codebase to answer "how does X work?" questions.
 
 ## When a question includes a design proposal
 
 Separate the user's outcome and constraints from the proposed mechanism. Mark source-backed facts, assumptions, and decisions separately. Before turning a new entity, identifier, state, capability, or boundary into an API or acceptance criterion, compare the smallest model that meets the outcome with the proposed model. Name the assumption most likely to change the design and find evidence or an observation that could disprove it. Keep acceptance criteria about user-visible behavior or required invariants, not a restatement of the proposed implementation. For choices that establish persistent state or cross-service contracts, apply [Model the Domain](../principle-model-the-domain/SKILL.md) and [Foundational Thinking](../principle-foundational-thinking/SKILL.md) before recommending a shape.
 
-## Assess the scope
+If the scope is ambiguous, state your interpretation and explore. The user can redirect.
 
-- A narrow question about one function or module needs one pass through the source.
-- A subsystem spanning files or services needs two to four distinct research angles.
+## 1. Explain
 
-When user and project instructions permit delegation, use `invoke_subagent` with `TypeName: "research"` for independent read-only exploration angles. Read `.agents/pstack-models.yaml` or `~/.gemini/config/pstack-models.yaml` if present and pass a configured `Model` tier (`inherit`, `flash_lite`, `flash`, `pro`) when set; otherwise pass `Model: "inherit"`. If delegation is disallowed, inspect the angles serially and say so only if the answer needs parallel coverage.
+Spawn one Task subagent with `subagent_type: generalPurpose` and `readonly: true` that explores and explains in one pass. Give it the user's question and this brief:
 
-## Explore
+> You are writing an architectural explanation for a senior engineer. Explore the codebase and write an explanation that a senior engineer unfamiliar with this area could read and walk away with a solid mental model. They should understand the architecture well enough to start working in it confidently. You have read-only access to the codebase.
 
-For a complex scope, divide the work into distinct questions, such as:
+## 2. Present
 
-- Where does the behavior start?
-- Which data shapes and state transitions carry it?
-- Which boundaries, services, or callers affect it?
-- Which tests or runtime evidence show the behavior?
-
-Give each subagent the relevant files, the question it owns (plus [`references/explorer-prompt.md`](references/explorer-prompt.md) when helpful), and the requirement to cite paths and symbols. Subagents are read-only and must not edit files.
-
-## Synthesize
-
-Combine the findings into one explanation (using [`references/explainer-prompt.md`](references/explainer-prompt.md) as a guide). Check important claims against source before presenting them. Separate observed behavior from inference.
-
-## Output
-
-Use only the sections that help answer the question:
-
-- **Overview**: the subsystem's purpose and entry point.
-- **Key concepts**: the data shapes and state owners.
-- **How it works**: the runtime sequence, with clickable `file:///absolute/path#Lstart-Lend` links for relevant paths and symbols.
-- **Where things live**: the module boundaries and callers.
-- **Gotchas**: verified edge cases or missing evidence.
+Present the subagent's output. Light edits for clarity or context from the conversation are fine. Do not substantially rewrite it.
