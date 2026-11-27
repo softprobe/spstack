@@ -2,7 +2,8 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "spstack",
   "version": "0.16.0",
-  "description": "Codex-first engineering workflows for deliberate design, focused implementation, and verified changes.",
+  "description": "Engineering workflows for deliberate design, focused implementation, and verified changes in Antigravity and Codex.",
+  "logo": "assets/logo.png",
   "author": {
     "name": "Softprobe",
     "url": "https://softprobe.ai"
@@ -11,6 +12,7 @@
   "repository": "https://github.com/softprobe/spstack",
   "license": "MIT",
   "keywords": [
+    "antigravity",
     "codex",
     "engineering",
     "skills",

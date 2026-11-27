@@ -14,7 +14,7 @@ The scope is what the user names. Otherwise it is the branch diff from its merge
 
 ## Fan out
 
-Use the `$arena` framing and isolation rules with four adversarial briefs. Do not run the arena selection or graft phases. If Codex collaboration is available and delegation is permitted, start the reviewers through the active tool schema. Give each reviewer the exact intent and scope, a separate worktree or output directory, and this brief:
+Use the `$arena` framing and isolation rules with four adversarial briefs. Do not run the arena selection or graft phases. If subagent collaboration (`invoke_subagent`) is available and delegation is permitted, start the reviewers through the active tool schema. Give each reviewer the exact intent and scope, an isolated workspace (`Workspace: 'share'` or `'branch'`, a separate worktree, or output directory), and this brief:
 
 > Break this change. Prove each finding with a run against the real code, such as a failing test, a repro script, or command output that shows the wrong behavior. For a design or plan, run a prototype or probe the current tree. Keep repros in your own worktree. Report each finding with a title, the exact command, the output it printed, and the output the intent requires. Leave out anything you did not run. No findings is a valid result.
 

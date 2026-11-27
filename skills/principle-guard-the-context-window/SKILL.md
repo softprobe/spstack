@@ -1,6 +1,6 @@
 ---
 name: principle-guard-the-context-window
-description: "Apply when context is filling up: large outputs, long files, repeated reads, fan-out planning. Use Codex collaboration for bulk work when available and permitted; otherwise read selectively and keep concise summaries."
+description: "Apply when context is filling up: large outputs, long files, repeated reads, fan-out planning. Use subagent collaboration for bulk work when available and permitted; otherwise read selectively and keep concise summaries."
 ---
 
 

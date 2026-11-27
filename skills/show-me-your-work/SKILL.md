@@ -54,7 +54,7 @@ Commit it only when the work is ambitious enough that a reviewer needs the trail
 
 ## Audit the log against the run
 
-At the end of the run, check the log against the active conversation and live repository state. Use Codex conversation-history tools only when the current session exposes them. Do not inspect undocumented local databases or other workspaces. Walk the rows against what actually happened. Each stretch begins at one of this run's `start` rows, or at the first row if this run created the log, and ends at the next `start` row of another run:
+At the end of the run, check the log against the active conversation (including `<appDataDir>/brain/<conversation-id>/.system_generated/logs/transcript.jsonl` when available) and live repository state. Use conversation-history tools only when the current session exposes them. Do not inspect undocumented local databases or other workspaces. Walk the rows against what actually happened. Each stretch begins at one of this run's `start` rows, or at the first row if this run created the log, and ends at the next `start` row of another run:
 
 - Check that every row maps to a real decision or action.
 - Check that each row's evidence resolves and shows what the row claims.
@@ -64,7 +64,7 @@ Correct the log, not the story. The audit never edits or removes a row, even an 
 
 ## Independent review of the trail
 
-Before handing back, ask a separate Codex collaborator to review the trail when collaboration tools are available and delegation is permitted. Use a different supported model only when the current tool accepts model selection. The reviewer reads the audit trail and available run context, then flags what the user should inspect. It does not redo the work. If an independent review cannot run, audit the log yourself and state that limitation.
+Before handing back, ask a separate subagent (`invoke_subagent`) to review the trail when collaboration tools are available and delegation is permitted. Use a different supported model only when the current tool accepts model selection. The reviewer reads the audit trail and available run context, then flags what the user should inspect. It does not redo the work. If an independent review cannot run, audit the log yourself and state that limitation.
 
 - Decisions logged with weak or absent evidence.
 - Verification steps skipped or claimed without proof in the transcript.

@@ -1,6 +1,6 @@
 ### Feature
 
-**You own the design. Plan, review, verify.** Use Codex collaborators for independent work when available and permitted. Otherwise implement serially.
+**You own the design. Plan, review, verify.** Use subagent collaborators (`invoke_subagent`) for independent work when available and permitted. Otherwise implement serially.
 
 Apply the **Scope gate** in [`../SKILL.md`](../SKILL.md) before design or implementation. Write the requested outcome and acceptance conditions in the checkpoint. Keep adjacent concerns as follow-ups unless evidence proves they block an acceptance condition.
 
@@ -11,7 +11,7 @@ Apply the **Scope gate** in [`../SKILL.md`](../SKILL.md) before design or implem
    - **Independent workstreams.** Disjoint files, services, or layers parallelize. Shared writes serialize.
    - **Shared mutable state.** Default to splitting the target (the **separate-before-serializing-shared-state** principle skill). Serialize only for real invariants.
    - **Smallest safe decomposition.** If one worker is best, name why.
-4. Delegate code-writing when Codex collaboration tools are available and the request permits it. Use the current session model unless a supported feature preference is configured. Give the delegate a specific scope, data shape, and success criteria. When several valid shapes exist, use **arena** to compare them first. If collaboration is unavailable, implement serially and report that no independent review occurred. Do not leave a parent waiting on a nested delegate. Comments follow **Comments**. Keep edits surgical, re-ground against source, update every consumer of a shared primitive, and verify each unit before committing.
+4. Delegate code-writing when subagent collaboration tools (`invoke_subagent`) are available and the request permits it. Use the current session model (`Model: 'inherit'`) unless a supported feature preference is configured. Give the delegate a specific scope, data shape, and success criteria. When several valid shapes exist, use **arena** to compare them first. If collaboration is unavailable, implement serially and report that no independent review occurred. Do not leave a parent waiting on a nested delegate. Comments follow **Comments**. Keep edits surgical, re-ground against source, update every consumer of a shared primitive, and verify each unit before committing.
 5. Verify on the matching surface. "Inconclusive" or wrong-surface is not a pass. Flag it.
 6. Rebase into small, ordered commits. Stack follow-ups.
    Use the **sequence-verifiable-units** principle skill, building, verifying, and committing each small unit before the next.

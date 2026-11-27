@@ -1,10 +1,27 @@
-# Spstack for Codex
+# Spstack for Antigravity & Codex
 
-Spstack is Softprobe's Codex-first fork of [pstack](https://github.com/cursor/plugins/tree/main/pstack), created by [Lauren Tan (@poteto)](https://x.com/poteto). The upstream project is licensed under MIT. See [LICENSE](./LICENSE) and [UPSTREAM.md](./UPSTREAM.md) for attribution and source details.
+Spstack is Softprobe's fork of [pstack](https://github.com/cursor/plugins/tree/main/pstack), created by [Lauren Tan (@poteto)](https://x.com/poteto), adapted for Google Antigravity (`agy`) and Codex. The upstream project is licensed under MIT. See [LICENSE](./LICENSE) and [UPSTREAM.md](./UPSTREAM.md) for attribution and source details.
 
-The repository packages one Codex plugin with a single canonical `skills/` tree. The Codex workflow and setup are maintained here without a parallel adapter layer.
+The repository packages one plugin with a single canonical `skills/` tree.
 
 ## Install
+
+### Antigravity (`agy`)
+
+Install directly from a local checkout or repository with the Antigravity CLI:
+
+```sh
+agy plugin install /path/to/spstack
+```
+
+Or validate and check the installed plugin status:
+
+```sh
+agy plugin validate /path/to/spstack
+agy plugin list
+```
+
+### Codex
 
 Add the Softprobe marketplace and install Spstack:
 
@@ -13,14 +30,7 @@ codex plugin marketplace add softprobe/spstack
 codex plugin add spstack@softprobe-spstack
 ```
 
-In the Codex desktop app, restart Codex after adding the marketplace. Then enable Spstack in the Plugins directory. In a new session, run `$setup-pstack` to configure optional delegation preferences, then start a substantial task with `$poteto-mode`.
-
-To install a development checkout, run these commands from its repository root:
-
-```sh
-codex plugin marketplace add .
-codex plugin add spstack@softprobe-spstack
-```
+In a new session, run `$setup-pstack` to configure optional delegation preferences, then start a substantial task with `$poteto-mode`.
 
 ## Use the stack
 
@@ -38,12 +48,12 @@ Create project-specific verification skills under `.agents/skills/verify-<app>/`
 
 ## Model preferences
 
-Delegates inherit the current Codex session model by default. Run `$setup-pstack` only when you want role-specific preferences. It writes `pstack-models.yaml` under `CODEX_HOME` (normally `~/.codex/`) and uses only model and reasoning values supported by the active Codex tools.
+Delegates inherit the current session model by default. Run `$setup-pstack` only when you want role-specific preferences. It writes `pstack-models.yaml` under `~/.gemini/config/pstack-models.yaml` in Antigravity (or `$CODEX_HOME/pstack-models.yaml` / `~/.codex/pstack-models.yaml` in Codex) and uses only model values supported by the active subagent tools (such as `inherit`, `flash_lite`, `flash`, `pro` in Antigravity's `invoke_subagent`).
 
-If the current session does not expose Codex collaboration tools, the skills continue serially where possible and report any parallel-only step they could not run.
+If the current session does not expose subagent delegation tools, the skills continue serially where possible and report any parallel-only step they could not run.
 
 ## Development
 
 The plugin manifest is [`plugin.json`](./plugin.json). The single canonical skill tree is [`skills/`](./skills/). The repo marketplace manifest is [`.agents/plugins/marketplace.json`](./.agents/plugins/marketplace.json).
 
-When editing a skill, keep it self-contained: use Codex tools directly, link to local references only when they add detail, and do not require a separate adapter document. Run the skill validator on changed skills and check that local links resolve.
+When editing a skill, keep it self-contained: use active agent tools directly, link to local references only when they add detail, and do not require a separate adapter document. Run `agy plugin validate` on changed skills and check that local links resolve.

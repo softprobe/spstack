@@ -16,9 +16,9 @@ Separate the user's outcome and constraints from the proposed mechanism. Mark so
 - A narrow question about one function or module needs one pass through the source.
 - A subsystem spanning files or services needs two to four distinct research angles.
 
-If the Codex session exposes collaboration tools and the user and project instructions permit delegation, use them for independent read-only research. Ask each delegate not to edit. Follow the active tool schema. If collaboration is unavailable, inspect the angles serially and say so only if the answer needs parallel coverage.
+If the session exposes subagent collaboration tools (`invoke_subagent`) and the user and project instructions permit delegation, use them for independent read-only research (`research` or read-only `self` subagent). Ask each delegate not to edit. Follow the active tool schema. If collaboration is unavailable, inspect the angles serially and say so only if the answer needs parallel coverage.
 
-Read `$CODEX_HOME/pstack-models.yaml`, or `~/.codex/pstack-models.yaml` when `CODEX_HOME` is unset, only when the session supports choosing a delegate model. Use configured role preferences only when the tool accepts them. Otherwise inherit the current session model.
+Read `~/.gemini/config/pstack-models.yaml` (or `$CODEX_HOME/pstack-models.yaml` / `~/.codex/pstack-models.yaml`) only when the session supports choosing a delegate model. Use configured role preferences only when the tool accepts them. Otherwise inherit the current session model.
 
 ## Explore
 

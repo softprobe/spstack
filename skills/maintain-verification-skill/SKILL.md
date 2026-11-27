@@ -26,7 +26,7 @@ Only edit the verification skill's own directory (its SKILL.md, features/, and a
 
 1. **Index hygiene.** Read the feature map README and glob its sibling files. Fix missing, extra, duplicate, or dead entries. Lightweight; no generated inventory.
 
-2. **Source review.** When Codex collaboration tools are available and delegation is permitted, assign independent feature files to read-only collaborators. Otherwise inspect the feature files serially. Each review explains how the user-facing feature works, cites source entry points, flags likely doc drift, and returns one live-verification recipe. Reviewers do not drive the app or edit files.
+2. **Source review.** When subagent collaboration tools (`invoke_subagent`) are available and delegation is permitted, assign independent feature files to read-only collaborators (`research` or read-only `self`). Otherwise inspect the feature files serially. Each review explains how the user-facing feature works, cites source entry points, flags likely doc drift, and returns one live-verification recipe. Reviewers do not drive the app or edit files.
 
 3. **Reconcile.** Every feature file has a returned summary. Merge overlapping recipes into as few app states as practical. Spot-check cited drift; don't re-prove clean claims. Sweep recent churn for user-facing surfaces missing from the map — require a concrete source path before calling one missing.
 

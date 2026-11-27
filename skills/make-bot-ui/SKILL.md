@@ -5,7 +5,7 @@ description: Build a small web UI whose actions call a webhook or backend endpoi
 
 # Build a webhook UI
 
-Inspect the repository and follow its existing app structure. Use this skill only for the UI and server integration. It does not create a webhook, Codex automation, or external workflow.
+Inspect the repository and follow its existing app structure. Use this skill only for the UI and server integration. It does not create a webhook, external automation, or external workflow.
 
 ## Confirm the endpoint contract
 
@@ -20,7 +20,7 @@ Keep credentials on the server. Read secrets from environment variables or the p
 3. Keep the browser limited to the local route. Do not let client code choose arbitrary URLs or forward arbitrary headers.
 4. Handle timeout, non-success responses, and duplicate submissions according to the endpoint contract.
 5. Add a local mock or fixture so the user flow can be checked without triggering the external system.
-6. Verify the actual UI and local server route with the project's existing driver. Use Codex browser or computer-use tools only when the current session provides them.
+6. Verify the actual UI and local server route with the project's existing driver. Use browser or computer-use tools only when the current session provides them.
 
 ## Expose the UI
 

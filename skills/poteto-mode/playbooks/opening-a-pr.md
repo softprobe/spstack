@@ -2,7 +2,7 @@
 
 Invoked at the end of every other playbook.
 
-**Worktree.** Use a git worktree off the target base when the current Codex session supports worktrees. Give each writer a separate worktree. If it does not, keep writes serial. For a dirty branch with unrelated work, preserve those changes and move this task to a clean worktree. Rebuild a snarled worktree from its base and reapply only the needed changes.
+**Worktree.** Use a git worktree off the target base (or `Workspace: 'share'` / `'branch'` in `invoke_subagent`) when the current session supports isolated worktrees. Give each writer a separate worktree. If it does not, keep writes serial. For a dirty branch with unrelated work, preserve those changes and move this task to a clean worktree. Rebuild a snarled worktree from its base and reapply only the needed changes.
 
 **Commits.** Commit liberally. Rebase into small, ordered commits before opening PRs. Each commit is a future PR: landable, ordered to tell the story. Amend when the fix belongs in a just-made commit. New commit when separable. Commit bodies don't restate the subject.
 
@@ -23,7 +23,7 @@ Recheck the **Scope gate** in [`../SKILL.md`](../SKILL.md) against the final dif
 
 After the sections, attach videos or screenshots when they prove a claim. Full SHAs, swarm or arena lane recitals, lever-correction essays, file-by-file checklists, and "CLEAN" verdicts go in a linked artifact, not the body.
 
-**Forge.** Resolve the repository's forge before the first PR operation and use one set of tools for create, edit, view, watch, and merge. Use Codex's GitHub tools when available. Otherwise use `gh` for GitHub or the repository's supported forge CLI.
+**Forge.** Resolve the repository's forge before the first PR operation and use one set of tools for create, edit, view, watch, and merge. Use built-in GitHub tools when available. Otherwise use `gh` for GitHub or the repository's supported forge CLI.
 
 **Built-in PR tool.** When the current session provides a GitHub or forge tool for the required PR operation, use it. Use the resolved forge CLI for operations the tool does not support, and for all PR operations when no suitable tool is available.
 

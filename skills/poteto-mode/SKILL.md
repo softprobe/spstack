@@ -1,6 +1,6 @@
 ---
 name: poteto-mode
-description: poteto's Codex workflow for deliberate planning, focused implementation, clear writing, and verified work. Use for poteto, $poteto-mode, or requests to work in this style.
+description: poteto's engineering workflow for deliberate planning, focused implementation, clear writing, and verified work in Antigravity and Codex. Use for poteto, $poteto-mode, or requests to work in this style.
 ---
 
 
@@ -24,15 +24,15 @@ Remaining triggers:
 - Nontrivial change, architecture decision, or "are we sure?" → the **how** skill.
 - Before asking the user to choose an approach, check whether a prototype, command, or source inspection can answer it. Use the Prototype playbook for observable questions. Ask only for genuine product or preference choices that evidence cannot settle. Apply any autonomy grant the user gave, and honor gates they named.
 - Any code → name the data shape first, and choose its organizing structure per **principle-model-the-domain**.
-- Code crossing a function boundary → the **architect** skill before implementing. Use parallel design exploration when Codex collaboration is available and permitted.
+- Code crossing a function boundary → the **architect** skill before implementing. Use parallel design exploration when subagent collaboration (`invoke_subagent`) is available and permitted.
 - Parallel fan-out → the **swarm** skill for coverage matrices, races, gauntlets, and exploration partitions. Use **arena** for design or code bakeoffs with base selection and grafting.
-- Contested design → the **interrogate** skill before shipping. Use multiple models only when the current Codex tools support them.
+- Contested design → the **interrogate** skill before shipping. Use multiple models only when the active subagent tools support them.
 - Nontrivial multi-step → write the throughput checkpoint (Feature step 3).
-- Any prose surface, your reply to the user included → the **unslop** skill. Write the reply per **Writing the reply**. Agent-facing prose also follows the `$skill-creator` skill when it is available.
+- Any prose surface, your reply to the user included → the **unslop** skill. Write the reply per **Writing the reply**. Agent-facing prose also follows `agy-customizations` or `$skill-creator` when available.
 - Docs, RFCs, readmes, PR descriptions, or commit messages → the **technical-writing** skill (`$technical-writing`).
 - Before commit → inspect the diff for narrating comments, unsupported guards, dead paths, and unrelated edits. Use **no-comments** where comments need review.
 - Before review → the **no-comments** skill (`$no-comments`).
-- Shipping UI / IDE / CLI → use the Codex browser or computer-use tools available in this session, or the project's own UI and CLI harness. Reproduce bugs on the same surface when a suitable driver is available. If no driver is available, state what could not be verified.
+- Shipping UI / IDE / CLI → use the browser or computer-use tools available in this session, or the project's own UI and CLI harness. Reproduce bugs on the same surface when a suitable driver is available. If no driver is available, state what could not be verified.
 - Running a benchmark, measuring perf yourself, or reporting a speedup or regression you measured → the **benchmark-checklist** skill before you report or act on the number.
 - Any PR-status request ("babysit this", "get it green", "address the review comments", or "check on PR X") → the **Babysit** playbook (`playbooks/babysit.md`). Never trigger it by merely opening a PR. Declare its mode before polling. The playbook's step 1 owns the request-to-mode mapping.
 - Asked to land or ship a stack → the **Shipping** playbook (`playbooks/shipping.md`). Check each PR at its current head and land only the verified run from the root. If an independent verdict is required but unavailable, report that gap and stop.
@@ -76,7 +76,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 **Delegation**
 
-- **Guard the Context Window.** Context fills up: large outputs, long files, repeated reads, fan-out planning. Route bulk to Codex collaborators when available and permitted; otherwise read selectively and summarize as you go.
+- **Guard the Context Window.** Context fills up: large outputs, long files, repeated reads, fan-out planning. Route bulk to subagents (`invoke_subagent` with `research` or `self`) when available and permitted; otherwise read selectively and summarize as you go.
 - **Never Block on the Human.** Tempted to ask "should I do X?" on reversible work. Proceed, present the result, let the human course-correct.
 
 **Meta**
@@ -95,7 +95,7 @@ Pause before an irreversible action unless the user explicitly authorized it. Wh
 
 ## Subagents
 
-Use Codex collaboration tools only when the user and project instructions permit delegation and the current session exposes those tools. If not, work serially and say when a required parallel step was unavailable. Read `$CODEX_HOME/pstack-models.yaml`, or `~/.codex/pstack-models.yaml` when `CODEX_HOME` is unset, only when a workflow needs role preferences. Delegates inherit the current model and reasoning effort unless a supported value is configured. Give each delegate a complete brief, include `references/roles/poteto-agent.md` when that role fits, and review its work before accepting it.
+Use subagent collaboration tools (`invoke_subagent`, `define_subagent`, `send_message`, `manage_subagents` in Antigravity, or Codex collaboration tools) only when the user and project instructions permit delegation and the current session exposes those tools. If not, work serially and say when a required parallel step was unavailable. Read `~/.gemini/config/pstack-models.yaml` (or `$CODEX_HOME/pstack-models.yaml` / `~/.codex/pstack-models.yaml`) only when a workflow needs role preferences. Delegates inherit the current model (`Model: 'inherit'`) unless a supported value (`flash_lite`, `flash`, `pro`) is configured. Use `Workspace: 'share'` or `'branch'` (or git worktrees) to isolate writing subagents, and `research` (or read-only `self`) for read-only exploration. Give each delegate a complete brief, include `references/roles/poteto-agent.md` when that role fits, and review its work before accepting it.
 
 ## Writing the reply
 
@@ -117,7 +117,7 @@ Comments follow the same rule as the reply. Keep a concise source comment beside
 
 ## Playbooks
 
-Create a task checklist using the available Codex task-list feature or a concise plan in the conversation or repository. Put the matched playbook's steps first, followed by task-specific items. Mark any skipped step with a short reason. Open the full playbook at `playbooks/<title>.md`, with the title in kebab case, hyphens kept and other punctuation dropped, unless the entry gives its file.
+Create a task checklist using a brain artifact (`<appDataDir>/brain/<conversation-id>/`), the active task-list feature, or a concise plan in the conversation or repository. Put the matched playbook's steps first, followed by task-specific items. Mark any skipped step with a short reason. Open the full playbook at `playbooks/<title>.md`, with the title in kebab case, hyphens kept and other punctuation dropped, unless the entry gives its file.
 
 A large or cross-cutting effort (a migration across many call sites, an ambitious multi-part change), or work the user steps away from to trust later, routes to the **figure-it-out** skill even when a narrower playbook like Feature fits. Use **figure-it-out** whenever no bundled playbook fits. It designs a bespoke, rigorous playbook for the task. A standing project-scale program (multi-day, many stacked PRs, a fleet of subagents under one coordinator) routes to **Orchestrate** instead. figure-it-out designs one bespoke run, orchestrate runs the program.
 
@@ -135,11 +135,11 @@ A large or cross-cutting effort (a migration across many call sites, an ambitiou
 - **Eval.** Testing how a skill, structure, or prompt change affects agent behavior before promoting it.
 - **Babysit.** Driving a PR or a stack to merge-ready: conflicts, review threads, CI.
 - **Shipping.** Landing a verified PR or stack after the user asks to ship or merge it. Verify each PR at its current head and move bottom-up through the stack.
-- **Autonomous run.** A long task to drive to completion without stopping ("run until done"). Continue in the active session unless a Codex background or automation feature is available and fits the task.
+- **Autonomous run.** A long task to drive to completion without stopping ("run until done"). Continue in the active session unless a background task (`manage_task`) or `schedule` feature is available and fits the task.
 - **Orchestrate.** A standing project handed to one coordinator chat: multi-day, many stacked PRs, dozens to hundreds of subagents, minimal human turns ("run this whole project", "own this migration until it lands"). Distinct from Autonomous run, which drives one task to a predicate. Work one agent could finish inside the session's budget routes there, not here, however program-shaped the phrasing sounds.
 - **Autopilot-full.** A scoped queue of PRs carried through implementation and verification, and through merge when the request authorizes it ("autopilot this queue", "full autopilot").
 - **Autopilot-stack.** A queue of PRs built and verified, then handed to the operator without merging. A PR stacks only on a PR it builds on ("autopilot-stack", "autopilot, don't merge", "stack them, don't ship", "build the stack, I'll land it").
-- **Session pickup.** Resuming or taking over prior work from a Codex conversation, task link, or pushed branch.
+- **Session pickup.** Resuming or taking over prior work from a prior conversation, task link, or pushed branch.
 - **Pause safely.** Suspending in-flight work cleanly on an explicit pause, when going offline, or before the session ends. The complement to Session pickup.
 - **Multi-phase or multi-PR plan.** Work that spans phases or stacked PRs. File: `playbooks/multi-phase-plan.md`.
 - **Worktree and simulator cleanup.** Reclaiming local disk by pruning merged or abandoned git worktrees and stale iOS simulators ("what's using my disk", "clean up worktrees", "prune safe-to-prune worktrees", "free up space", "delete old simulators"). File: `playbooks/worktree-cleanup.md`.

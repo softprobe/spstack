@@ -1,6 +1,6 @@
 ### Hillclimb
 
-**You own the metric and the experiment's integrity.** Use Codex collaborators for isolated implementation attempts when available and permitted. Otherwise run attempts serially. For sustained, iterative improvement of one measurable thing against a target. A one-off fix is Bug fix or Perf issue.
+**You own the metric and the experiment's integrity.** Use subagent collaborators (`invoke_subagent`) for isolated implementation attempts when available and permitted. Otherwise run attempts serially. For sustained, iterative improvement of one measurable thing against a target. A one-off fix is Bug fix or Perf issue.
 
 Core discipline: one change, one measurement, keep or revert. Never stack untested changes, and never claim a win from code inspection (the **prove-it-works** principle skill).
 
@@ -13,7 +13,7 @@ Core discipline: one change, one measurement, keep or revert. Never stack untest
    - Measure before and after with the frozen harness, and run the regression gate.
    - Accept only when the metric moves past noise and the gate stays green. Otherwise revert the change in full. A tweak that "might help" is not kept.
    - One commit per accepted fix, staging only the files you changed (`git add <files>`, never `-A`). Log the row either way, kept or reverted.
-   Each iteration ends in a check before the next begins (the **sequence-verifiable-units** principle skill). If the user requests an unattended run, use a supported Codex automation only when the current environment exposes one and it fits the request. Otherwise keep the work in the active session and save a checkpoint before stopping.
+   Each iteration ends in a check before the next begins (the **sequence-verifiable-units** principle skill). If the user requests an unattended run, use a supported automation or `schedule` tool only when the current environment exposes one and it fits the request. Otherwise keep the work in the active session and save a checkpoint before stopping.
 6. Push past the first plateau. On a stall, several rejects in a row, pivot category, combine near-misses, re-read the source, or try something more radical before concluding the hill is climbed. Correctness and simplicity outrank the number. Revert a win that breaks behavior, and keep a simplification that holds the number (the **laziness-protocol** principle skill).
 7. Stop when the predicate is met, or when the remaining ideas are marginal and not worth their cost. Don't relax the predicate to meet it, and don't quit while cheap untried hypotheses remain. If you are stuck, surface it instead of spinning.
 8. Run **Opening a PR** with the accepted commits stacked in the order they landed.

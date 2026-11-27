@@ -1,6 +1,6 @@
 ---
 name: reflect
-description: Review the current Codex conversation for durable lessons, propose skill edits, and wait for approval before applying them. Use when the user says $reflect.
+description: Review the current conversation for durable lessons, propose skill edits, and wait for approval before applying them. Use when the user says $reflect.
 ---
 
 # Reflect
@@ -9,11 +9,11 @@ Find durable learnings in the current conversation and propose focused skill cha
 
 ## 1. Gather the conversation
 
-Use the active conversation directly. Codex does not promise a stable transcript path. Use Codex history tools only when this session exposes them and the user can access the history. Do not inspect undocumented databases or other workspaces. If the chat is too long to inspect, create a concise evidence digest from the visible conversation.
+Use the active conversation directly, or read the Antigravity conversation transcript at `<appDataDir>/brain/<conversation-id>/.system_generated/logs/transcript.jsonl` (and `transcript_full.jsonl` for truncated lines) when available. Use conversation-history tools only when this session exposes them and the user can access the history. Do not inspect undocumented databases or other workspaces. If the chat is too long to inspect, create a concise evidence digest from the visible conversation.
 
 ## 2. Review for patterns
 
-Look for repeated corrections, choices, and workflow failures. One-off preferences are weak evidence. Use Codex collaboration tools for independent reviews only when available and permitted. Give each reviewer a separate lens and the same evidence digest. Otherwise review the conversation yourself and say that there was no independent review.
+Look for repeated corrections, choices, and workflow failures. One-off preferences are weak evidence. Use subagent collaboration tools (`invoke_subagent`) for independent reviews only when available and permitted. Give each reviewer a separate lens and the same evidence digest. Otherwise review the conversation yourself and say that there was no independent review.
 
 Reviewers should return candidate lessons with the user's evidence, a proposed skill destination, and a concrete change. A synthesizer may combine duplicates and reject lessons that would not change a future decision.
 
@@ -28,11 +28,11 @@ Show the proposed Accepted, Rejected, and Backlog items. Wait for the user's exp
 Route approved edits:
 
 - A one-line correction goes directly into the existing skill.
-- A substantive skill change uses `$skill-creator` when available.
-- A new skill uses `$skill-creator` when available and has no existing skill home.
+- A substantive skill change uses `agy-customizations` or `$skill-creator` when available.
+- A new skill uses `agy-customizations` or `$skill-creator` when available and has no existing skill home.
 
-Project skills live under `.agents/skills/<skill>/`. Personal skills live under `~/.agents/skills/<skill>/`. Never edit Codex's installed plugin cache.
+Project skills live under `.agents/skills/<skill>/`. Personal skills live under `~/.gemini/config/skills/<skill>/` in Antigravity (or `~/.agents/skills/<skill>/`). Never edit an installed plugin cache directly unless explicitly developing the plugin source.
 
 ## 5. Validate and report
 
-Check frontmatter and local links. Run the Codex skill validator when available. Report the evidence, approved edits, rejected items with reasons, proposed backlog, and validation results.
+Check frontmatter and local links. Run `agy plugin validate` (or the active skill validator) when available. Report the evidence, approved edits, rejected items with reasons, proposed backlog, and validation results.

@@ -5,7 +5,7 @@ description: Review comments in a diff with a fresh, skeptical perspective, remo
 
 # No comments
 
-Use a reviewer that did not write the comments. Read [`references/comment-sicko.md`](references/comment-sicko.md) and include its role instructions in a Codex subagent brief when collaboration tools are available and delegation is permitted. If tools are unavailable, delegation is not permitted, a spawn fails, or no report is returned, perform the review yourself from the role instructions and disclose that it was not independent. Call a review independent only after a separate reviewer returned a report that you inspected; a spawn attempt is not a report.
+Use a reviewer that did not write the comments. Read [`references/comment-sicko.md`](references/comment-sicko.md) and include its role instructions in a subagent brief (`invoke_subagent`) when collaboration tools are available and delegation is permitted. If tools are unavailable, delegation is not permitted, a spawn fails, or no report is returned, perform the review yourself from the role instructions and disclose that it was not independent. Call a review independent only after a separate reviewer returned a report that you inspected; a spawn attempt is not a report.
 
 ## Scope
 
