@@ -19,14 +19,12 @@ Open a todolist with one entry per phase before launching anything.
 
 1. State the done predicate and the artifact or report the swarm must return.
 2. Choose the shape. Partition into slices, race N workers on identical briefs, or mix both. For a race or mixed shape, declare `first pass`, `rank all`, or `best-of` before spawning.
-3. Pick the worker model from the `swarm workers` line in `~/.cursor/rules/pstack-models.mdc`. If the rule or that line is missing, use `claude-opus-5-5-high-fast`. For `auto` or `inherit-parent`, omit `model` so the workers run on the parent model. If the Task tool rejects a slug, use the default and say so. If it rejects the default, use the closest valid slug of the same family from its error message. For a model race, name each arm's model up front. Pick each subagent's reasoning level for the job, per the Subagents section of the **poteto-mode** skill.
-4. Give each worker its own writable output when it writes. When workers verify or measure commits, each brief names the exact SHAs. A measurement brief also names the method (sample count, what one sample is, order). The worker records both in its result.
+3. Pick the worker model tier from the `swarm workers` line in `.agents/pstack-models.yaml` or `~/.gemini/config/pstack-models.yaml` (`inherit`, `flash_lite`, `flash`, `pro`). If the file or line is missing, use `Model: "inherit"`. For a model race, name each arm's model up front.
+4. Give each worker its own writable output (`Workspace: "share"` or `"branch"`, or a separate git worktree) when it writes. When workers verify or measure commits, each brief names the exact SHAs. A measurement brief also names the method (sample count, what one sample is, order). The worker records both in its result.
 
 ## Phase B: Fan out
 
-Spawn all N workers in one message with `subagent_type: generalPurpose`, `environment: "cloud"`, `run_in_background: true`, and the step 3 model, left unset for `auto` or `inherit-parent`. Use `environment: "local"` only when the worker needs access to something on the user's computer.
-
-When a worker must start from a non-default pushed branch, pass `cloud_base_branch`.
+Spawn all N workers in one turn with `invoke_subagent` (`TypeName: "research"` for read-only slices, or `"poteto-agent"` / `"self"` when running commands or writing files), using `Workspace: "share"` or `"branch"` for writers and the step 3 `Model` tier. Subagents run in the background and notify you automatically when they finish; do not poll in a loop.
 
 Every brief stands alone. Include the goal, scope, exact slice or race arm, how to verify, and what to report. Reports use `PASS`, `ISSUES`, or `BLOCKED` with evidence. A worker that can prove a defect reports `ISSUES` and lists every issue it can prove, not only the first.
 
