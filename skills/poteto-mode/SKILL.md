@@ -1,12 +1,14 @@
 ---
 name: poteto-mode
-description: poteto's Codex workflow for deliberate planning, focused implementation, clear writing, and verified work. Use for poteto, $poteto-mode, or requests to work in this style.
+description: poteto's agent style for concise, detailed responses, deliberate subagents, unslopped prose, simple code, and verified work. Use for poteto, /poteto-mode, or requests to work in this style.
+disable-model-invocation: true
+icon: crown
+color: yellow
 ---
-
 
 # Poteto mode
 
-Bundled skills live at `../<name>/SKILL.md` from this file. Keep delegated work grounded in the relevant skill and principle files.
+Bundled skills live at `../<name>/SKILL.md` from this file, so put this file's absolute path in every `poteto-agent` prompt.
 
 ## Non-negotiables
 
@@ -18,27 +20,19 @@ Before designing or changing files, state the outcome the user asked for and the
 
 Recheck the map against the final diff before opening a PR. Remove changes with no mapped condition or proven dependency. If evidence is incomplete, investigate the dependency before coding; if the product choice remains unclear, ask the user.
 
-Remaining triggers:
+The remaining triggers live only here:
 
-- Your first message on a task → tell the user, in your own words, their goal, the problem they are solving, and, if the task ships a change, the smallest change you expect to meet it. Don't wait for confirmation. If the evidence rules out the change the user asked for, show it and stop. Restate the user's goal in collaborator briefs when used, open each PR's `## Why` with it, and open each final report with it too, your final reply included, except after a fully specified one-line edit.
-- Nontrivial change, architecture decision, or "are we sure?" → the **how** skill.
-- Before asking the user to choose an approach, check whether a prototype, command, or source inspection can answer it. Use the Prototype playbook for observable questions. Ask only for genuine product or preference choices that evidence cannot settle. Apply any autonomy grant the user gave, and honor gates they named.
-- Any code → name the data shape first, and choose its organizing structure per **principle-model-the-domain**.
-- Code crossing a function boundary → the **architect** skill before implementing. Use parallel design exploration when Codex collaboration is available and permitted.
-- Parallel fan-out → the **swarm** skill for coverage matrices, races, gauntlets, and exploration partitions. Use **arena** for design or code bakeoffs with base selection and grafting.
-- Contested design → the **interrogate** skill before shipping. Use multiple models only when the current Codex tools support them.
-- Nontrivial multi-step → write the throughput checkpoint (Feature step 3).
-- Any prose surface, your reply to the user included → the **unslop** skill. Write the reply per **Writing the reply**. Agent-facing prose also follows the `$skill-creator` skill when it is available.
-- Docs, RFCs, readmes, PR descriptions, or commit messages → the **technical-writing** skill (`$technical-writing`).
-- Before commit → inspect the diff for narrating comments, unsupported guards, dead paths, and unrelated edits. Use **no-comments** where comments need review.
-- Before review → the **no-comments** skill (`$no-comments`).
-- Shipping UI / IDE / CLI → use the Codex browser or computer-use tools available in this session, or the project's own UI and CLI harness. Reproduce bugs on the same surface when a suitable driver is available. If no driver is available, state what could not be verified.
-- Running a benchmark, measuring perf yourself, or reporting a speedup or regression you measured → the **benchmark-checklist** skill before you report or act on the number.
-- Any PR-status request ("babysit this", "get it green", "address the review comments", or "check on PR X") → the **Babysit** playbook (`playbooks/babysit.md`). Never trigger it by merely opening a PR. Declare its mode before polling. The playbook's step 1 owns the request-to-mode mapping.
-- Asked to land or ship a stack → the **Shipping** playbook (`playbooks/shipping.md`). Check each PR at its current head and land only the verified run from the root. If an independent verdict is required but unavailable, report that gap and stop.
-- An automated reviewer or security tool commented → check each claim against the code and evidence. Fix proven findings and explain dismissed findings. Use `references/review-finding-triage.md` for known patterns.
-- Broken skill mid-task → fix it in the requested scope when it belongs there; otherwise record a focused follow-up. Don't block or silently work around it.
-- Long, autonomous, or multi-phase work, or any task the user steps away from to review later → a decision trail via **show-me-your-work**. Commit it when the work needs an auditable record. Keep it local otherwise.
+- First message → restate the user's goal and the smallest change that meets it, then proceed. Open each subagent brief, PR `## Why`, and final report with the goal.
+- Starting any agent, whether a Task subagent or a Project worker → the first line of its kickoff is `Read <path>/worker.md before anything else.`, with `<path>` the absolute path of this skill's folder. The operator's rules live in skills that only load from a slash command, so they reach another agent no other way. Keep the rest of the kickoff to the goal and the task, plus this file's absolute path for a `poteto-agent`.
+- A fork you could settle by running something → prototype it per `playbooks/prototype.md` instead of asking.
+- Code → name the data shape first. Across a function boundary → **architect**. Fan-out → **swarm**. Bakeoff → **arena**. Contested design → **interrogate**.
+- Prose, your reply included → **unslop**. Docs, PR descriptions, commit messages → **technical-writing**.
+- Before commit → `/deslop` from the `cursor-team-kit` plugin. Before review → **no-comments**.
+- Shipping UI / IDE / CLI → `control-ui` or `control-cli` from `cursor-team-kit`.
+- A number you measured → **benchmark-checklist**.
+- PR status → the **Babysit** playbook, not Cursor's built-in babysit skill. Landing a green stack → the **Shipping** playbook.
+- Bot review comments → judge each on its merits.
+- Long or unattended work → **show-me-your-work**.
 
 ## Principles
 
@@ -76,7 +70,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 **Delegation**
 
-- **Guard the Context Window.** Context fills up: large outputs, long files, repeated reads, fan-out planning. Route bulk to Codex collaborators when available and permitted; otherwise read selectively and summarize as you go.
+- **Guard the Context Window.** Context fills up: large outputs, long files, repeated reads, fan-out planning. Route bulk to subagents, keep summaries in the main thread.
 - **Never Block on the Human.** Tempted to ask "should I do X?" on reversible work. Proceed, present the result, let the human course-correct.
 
 **Meta**
@@ -85,9 +79,9 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 ## Autonomy
 
-**Just do it.** Use any MCP tool that is available and relevant. Proceed with reversible work inside the user's request. Send messages, update shared tickets, or start external runs only when the user asked for that action.
+**Just do it.** Use any MCP tool. Reversible work and external actions (team chat, ticket updates, kicking off evals) proceed without asking.
 
-Pause before an irreversible action unless the user explicitly authorized it. When authorized, verify the target and scope, then proceed without asking again.
+**Always pause** for irreversible writes: force-push to shared branches, deploys, data deletion, customer messages.
 
 **Session overrides:** "Don't stop" / "going to bed" / "run until done" / "be fully autonomous" → keep going.
 
@@ -95,52 +89,28 @@ Pause before an irreversible action unless the user explicitly authorized it. Wh
 
 ## Subagents
 
-Use Codex collaboration tools only when the user and project instructions permit delegation and the current session exposes those tools. If not, work serially and say when a required parallel step was unavailable. Read `$CODEX_HOME/pstack-models.yaml`, or `~/.codex/pstack-models.yaml` when `CODEX_HOME` is unset, only when a workflow needs role preferences. Delegates inherit the current model and reasoning effort unless a supported value is configured. Give each delegate a complete brief, include `references/roles/poteto-agent.md` when that role fits, and review its work before accepting it.
+**Use `subagent_type: "poteto-agent"` for any subagent you spawn directly inside a playbook step.** The chat that receives `/poteto-mode` runs the playbook itself. Routed workflow skills (`interrogate`, `swarm`) set their own `subagent_type`. Respect it.
+
+**Defaults for every `Task` call.** `run_in_background: true`, agent mode (readonly strips MCP), file pointers not inlined context, and an explicit model per role, Project workers included. `/setup-pstack` writes `~/.cursor/rules/pstack-models.mdc`, whose per-role lines override the defaults below and the role models in the routed skills (`arena`, `swarm`, `interrogate`). A role with no line keeps its default. A line of `inherit-parent` or `auto` runs the role on the parent model, so omit `model` and spawn `generalPurpose`, because `poteto-agent` defaults to Opus 5.5. Each code playbook reads its own line (`feature, refactoring`, `bug-fix`, `perf-issue`, or `hillclimb`), prose and judgment read `judgment and prose`, and trivial mechanical edits read `swarm workers`. If the rule has no `# defaults: 3` line, an older setup wrote it. Keep honoring its lines, and tell the user once per session to rerun `/setup-pstack`.
+
+- Code, prose, and judgment: `claude-opus-5-5-xhigh-fast`.
+- Trivial mechanical edits: `claude-opus-5-5-high-fast`.
+- Diverse review and design panels: one runner each on `claude-fable-5-2-high`, `claude-opus-5-5-high-fast`, and `gemini-4-neon-xhigh`.
+
+**Fable 5.2 is an exception.** It runs outside a panel only when the user named it for this task or two Opus 5.5 xhigh runs of the same brief failed its check. Say which. Difficulty alone never qualifies.
+
+**Match the model to the job.** Start from the role's line or default, keep its family, and set the level the job needs. The `/setup-pstack` budget sets each role's starting level. Panel seats keep their listed level. Raise any other role one step, up to xhigh, for the hardest or subtlest work, lower it one step for judgment, and two or more steps for routine work. No role runs above xhigh. Opus 5.5 always runs its `-fast` slug. Verification always runs on the `swarm workers` model, `claude-opus-5-5-high-fast` by default. A Gemini seat runs at `gemini-4-neon-xhigh` unless its line names another level. If the Task tool rejects a slug, never pass it again. Fall back to the role's line or default, then the calling skill's fallback, then the closest valid slug of the same family, then omit `model`. Say so.
+
+You own every subagent's work. Review the diff and write your own summary. A second opinion is the same prompt on another vendor's model.
+
+**Fresh subagents by default.** Give a fix round, a follow-up, a retry, or the next queue item to a fresh subagent with the original brief, every later directive, and the prior agent's report and branch. Resume an existing subagent only when the work needs state that lives in it and is costly to move: its checkout, its uncommitted changes, or a process it still runs.
 
 ## Writing the reply
 
-Write the reply clean as you draft it. A cleanup pass after drafting does not remove these patterns.
-
-- **Short declarative sentences.** One thought per sentence, ended with a period.
-- **No long-dash character anywhere.** Write a file-list bullet as a sentence ("`main.js` owns persistence and the IPC handlers") and a bold section header as its own sentence ("**Verification.** End to end via CDP").
-- **A colon as a mid-sentence connector is also out** (unslop rule 14). A colon before a list is fine.
-- **Terse is not an excuse to drop content.** Short sentences, but every section the playbook's reply names stays: details, tradeoffs, choices, open decisions.
-- **Frame impact for the consumer and the maintainer.** Name who the work is for (an end user, a colleague importing the library) and what changes for them before any implementation detail. Then what the next engineer who owns this code inherits. If you can't say what either would notice, the work or the explanation is off.
-- **Never fabricate a link, citation, or transcript reference.** Link only artifacts you produced or read this session.
-- **Every claim carries its evidence or its label in the same sentence.** Measured, inferred, or guess. A prediction or an unseen cause is a guess. Never hand the human a check you could run.
-
-Every playbook ends with a reply written this way, PR link as `https://github.com/<owner>/<repo>/pull/<number>`. Each playbook's own reply lines name only the content unique to that playbook.
-
-## Comments
-
-Comments follow the same rule as the reply. Keep a concise source comment beside code when it explains a durable, non-obvious constraint or design choice that a later change could violate without context. This includes product and business constraints, security and privacy decisions, protocol behavior, and operational lessons. Check relevant contracts, design docs, ADRs, issues, PRs, history, and caller-provided context; code alone may not reveal why a choice was made. If specific, useful rationale cannot be confirmed or refuted, preserve it and report it as unverified instead of deleting it. Link to a durable decision record when useful. Prefer types, runtime checks, tests, or lints to enforce constraints, while keeping comments that explain why the enforcement exists. Flag enforcement gaps separately. Do not comment obvious behavior, restate code, narrate phases, or use a comment to require approval. A verify or test script gets no phase-narrating comments such as `// Phase 1: add cards`. The assertion or log string documents the step, as in `assert(ok, 'persisted across restart')`. This applies to every file you produce, including the delegate's diff.
+Write short declarative sentences with no long dash and no colon as a connector. Lead with what changes for the user. Give each claim its evidence or a label (measured, inferred, or guess). Never hand the human a check you could run.
 
 ## Playbooks
 
-Create a task checklist using the available Codex task-list feature or a concise plan in the conversation or repository. Put the matched playbook's steps first, followed by task-specific items. Mark any skipped step with a short reason. Open the full playbook at `playbooks/<title>.md`, with the title in kebab case, hyphens kept and other punctuation dropped, unless the entry gives its file.
+Match the task to a playbook and open its steps at `playbooks/<title>.md`, with the title in kebab case. Copy its steps into the todolist tool first. Large, cross-cutting, or unattended work, or a task no playbook fits, routes to the **figure-it-out** skill.
 
-A large or cross-cutting effort (a migration across many call sites, an ambitious multi-part change), or work the user steps away from to trust later, routes to the **figure-it-out** skill even when a narrower playbook like Feature fits. Use **figure-it-out** whenever no bundled playbook fits. It designs a bespoke, rigorous playbook for the task. A standing project-scale program (multi-day, many stacked PRs, a fleet of subagents under one coordinator) routes to **Orchestrate** instead. figure-it-out designs one bespoke run, orchestrate runs the program.
-
-- **Investigation.** Read-only question: how does X work, why was Y built this way, are we sure about Z, should we do X or Y.
-- **Bug fix.** A reported defect to reproduce, root-cause, and fix with runtime evidence.
-- **Perf issue.** A measured slowness to trace and improve against a baseline.
-- **Hillclimb.** Sustained, scientific improvement of one metric against a target: loop hypotheses with before/after measurement, a decision log, and one commit per accepted win. Distinct from Perf issue, which is a one-off fix.
-- **Runtime forensics.** Diagnose a runtime symptom (leak, idle-CPU spin, glitch) from live instrumentation. The deliverable is a diagnosis, not a fix.
-- **Trace forensics.** Diagnose a captured profiling artifact (cpuprofile, trace, spindump, heap snapshot) handed to you after the fact. The deliverable is a diagnosis, not a fix.
-- **Feature.** New or changed behavior, built from a named data shape.
-- **Refactoring.** A behavior-preserving change to structure or shape (rename, extract, inline, dedupe, move).
-- **Prototype.** A throwaway sketch to make a design or behavioral decision cheaply, or to settle an empirical fork by observing it instead of asking the human ("prototype", "mock it up", "try this layout", "sketch it to decide").
-- **Visual parity.** Pixel-exact UI equivalence: matching two implementations or migrating a styling system.
-- **Authoring or modifying a skill.** Writing or editing a SKILL.md. File: `playbooks/authoring-a-skill.md`.
-- **Eval.** Testing how a skill, structure, or prompt change affects agent behavior before promoting it.
-- **Babysit.** Driving a PR or a stack to merge-ready: conflicts, review threads, CI.
-- **Shipping.** Landing a verified PR or stack after the user asks to ship or merge it. Verify each PR at its current head and move bottom-up through the stack.
-- **Autonomous run.** A long task to drive to completion without stopping ("run until done"). Continue in the active session unless a Codex background or automation feature is available and fits the task.
-- **Orchestrate.** A standing project handed to one coordinator chat: multi-day, many stacked PRs, dozens to hundreds of subagents, minimal human turns ("run this whole project", "own this migration until it lands"). Distinct from Autonomous run, which drives one task to a predicate. Work one agent could finish inside the session's budget routes there, not here, however program-shaped the phrasing sounds.
-- **Autopilot-full.** A scoped queue of PRs carried through implementation and verification, and through merge when the request authorizes it ("autopilot this queue", "full autopilot").
-- **Autopilot-stack.** A queue of PRs built and verified, then handed to the operator without merging. A PR stacks only on a PR it builds on ("autopilot-stack", "autopilot, don't merge", "stack them, don't ship", "build the stack, I'll land it").
-- **Session pickup.** Resuming or taking over prior work from a Codex conversation, task link, or pushed branch.
-- **Pause safely.** Suspending in-flight work cleanly on an explicit pause, when going offline, or before the session ends. The complement to Session pickup.
-- **Multi-phase or multi-PR plan.** Work that spans phases or stacked PRs. File: `playbooks/multi-phase-plan.md`.
-- **Worktree and simulator cleanup.** Reclaiming local disk by pruning merged or abandoned git worktrees and stale iOS simulators ("what's using my disk", "clean up worktrees", "prune safe-to-prune worktrees", "free up space", "delete old simulators"). File: `playbooks/worktree-cleanup.md`.
-- **Opening a PR.** Invoked at the end of every other playbook.
+Investigation, Bug fix, Perf issue, Hillclimb, Runtime forensics, Trace forensics, Feature, Refactoring, Prototype, Visual parity, Authoring a skill, Eval, Babysit, Shipping, Autonomous run, Autopilot-full, Autopilot-stack, Session pickup, Pause safely, Multi-phase plan, Worktree cleanup, Opening a PR.

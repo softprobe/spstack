@@ -1,8 +1,9 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "spstack",
-  "version": "0.16.0",
-  "description": "Codex-first engineering workflows for deliberate design, focused implementation, and verified changes.",
+  "version": "0.17.0",
+  "description": "Engineering workflows for deliberate design, focused implementation, and verified changes.",
+  "logo": "assets/logo.png",
   "author": {
     "name": "Softprobe",
     "url": "https://softprobe.ai"
@@ -11,25 +12,10 @@
   "repository": "https://github.com/softprobe/spstack",
   "license": "MIT",
   "keywords": [
-    "codex",
     "engineering",
     "skills",
+    "workflows",
     "verification",
-    "workflows"
-  ],
-  "extensions": {
-    "com.openai": {
-      "onboardingSkill": "./skills/setup-pstack/SKILL.md",
-      "interface": {
-        "displayName": "Spstack",
-        "shortDescription": "Codex-first engineering workflows",
-        "longDescription": "Focused skills and playbooks for code understanding, design, implementation, review, and verification.",
-        "developerName": "Softprobe",
-        "category": "Productivity",
-        "websiteURL": "https://github.com/softprobe/spstack",
-        "brandColor": "#3B82F6",
-        "logo": "./assets/logo.png"
-      }
-    }
-  }
+    "poteto-mode"
+  ]
 }

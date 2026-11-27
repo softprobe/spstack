@@ -4,9 +4,12 @@ Spstack is based on the MIT-licensed `pstack` plugin from [cursor/plugins](https
 
 - Upstream repository: <https://github.com/cursor/plugins>
 - Upstream path: `pstack/`
-- Imported upstream commit: `fd268b808c786469e6dd8c8d9db864d0de4d669e`
-- Upstream version: `0.15.36`
-- Port date: 2026-11-03
+- Imported upstream commit: `b7b93c36be9bcc36a74db438e0fd385d660bc559`
+- Upstream version: `0.15.48`
+- Sync date: 2026-11-27
 - License: MIT. See [LICENSE](./LICENSE).
 
-Spstack is a maintained fork. Its Codex plugin package and skills are adapted for Codex; the upstream Cursor package is not duplicated in this repository.
+Spstack is a maintained fork:
+- `main` tracks upstream `pstack` plus Softprobe's shared workflow gates without runtime-specific dialects.
+- `codex` packages the Codex-native plugin from `main`.
+- `agy` packages the Google Antigravity-native plugin from `main`.
