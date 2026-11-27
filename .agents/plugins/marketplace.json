@@ -1,0 +1,20 @@
+{
+  "name": "softprobe-spstack",
+  "interface": {
+    "displayName": "Softprobe"
+  },
+  "plugins": [
+    {
+      "name": "spstack",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "category": "Productivity",
+      "interface": {
+        "displayName": "Spstack",
+        "shortDescription": "Codex-first engineering workflows"
+      }
+    }
+  ]
+}

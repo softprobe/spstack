@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "spstack",
   "version": "0.17.0",
-  "description": "Engineering workflows for deliberate design, focused implementation, and verified changes.",
+  "description": "Codex-first engineering workflows for deliberate design, focused implementation, and verified changes.",
   "logo": "assets/logo.png",
   "author": {
     "name": "Softprobe",
@@ -12,6 +12,7 @@
   "repository": "https://github.com/softprobe/spstack",
   "license": "MIT",
   "keywords": [
+    "codex",
     "engineering",
     "skills",
     "workflows",
